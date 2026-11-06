@@ -1,0 +1,316 @@
+{
+  "$defs": {
+    "Alternate": {
+      "additionalProperties": false,
+      "description": "A second accepted answer, for a question with two agreed readings.",
+      "properties": {
+        "reading": {
+          "title": "Reading",
+          "type": "string"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NumericResult"
+            },
+            {
+              "$ref": "#/$defs/SetResult"
+            },
+            {
+              "$ref": "#/$defs/ScalarTextResult"
+            },
+            {
+              "$ref": "#/$defs/RecordResult"
+            },
+            {
+              "$ref": "#/$defs/RefusalResult"
+            },
+            {
+              "$ref": "#/$defs/MethodResult"
+            }
+          ],
+          "title": "Result"
+        }
+      },
+      "required": [
+        "reading",
+        "result"
+      ],
+      "title": "Alternate",
+      "type": "object"
+    },
+    "MethodResult": {
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "title": "Answer",
+          "type": "null"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        }
+      },
+      "required": [
+        "answer",
+        "method"
+      ],
+      "title": "MethodResult",
+      "type": "object"
+    },
+    "NumericResult": {
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Answer"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "answer"
+      ],
+      "title": "NumericResult",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "data_version": {
+          "title": "Data Version",
+          "type": "string"
+        },
+        "snapshot_sha256": {
+          "title": "Snapshot Sha256",
+          "type": "string"
+        },
+        "code_commit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code Commit"
+        },
+        "code_dirty": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code Dirty"
+        },
+        "uv_lock_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Uv Lock Sha256"
+        },
+        "python": {
+          "title": "Python",
+          "type": "string"
+        },
+        "packages": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Packages",
+          "type": "object"
+        },
+        "platform": {
+          "title": "Platform",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_version",
+        "snapshot_sha256",
+        "code_commit",
+        "code_dirty",
+        "uv_lock_sha256",
+        "python",
+        "packages",
+        "platform"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "RecordResult": {
+      "additionalProperties": false,
+      "description": "Several named values, e.g. {\"MAE\": 1.2, \"RMSE\": 2.3}. Numbers are compared field by field.",
+      "properties": {
+        "answer": {
+          "additionalProperties": true,
+          "title": "Answer",
+          "type": "object"
+        },
+        "units": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "title": "Units",
+          "type": "object"
+        }
+      },
+      "required": [
+        "answer"
+      ],
+      "title": "RecordResult",
+      "type": "object"
+    },
+    "RefusalResult": {
+      "additionalProperties": false,
+      "properties": {
+        "refused": {
+          "const": true,
+          "title": "Refused",
+          "type": "boolean"
+        },
+        "predicate": {
+          "title": "Predicate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "refused",
+        "predicate"
+      ],
+      "title": "RefusalResult",
+      "type": "object"
+    },
+    "ScalarTextResult": {
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "title": "Answer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "answer"
+      ],
+      "title": "ScalarTextResult",
+      "type": "object"
+    },
+    "SetResult": {
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Answer",
+          "type": "array"
+        },
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "answer",
+        "count"
+      ],
+      "title": "SetResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One line of outputs/gold_results.jsonl.",
+  "properties": {
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    },
+    "status": {
+      "const": "success",
+      "title": "Status",
+      "type": "string"
+    },
+    "result": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NumericResult"
+        },
+        {
+          "$ref": "#/$defs/SetResult"
+        },
+        {
+          "$ref": "#/$defs/ScalarTextResult"
+        },
+        {
+          "$ref": "#/$defs/RecordResult"
+        },
+        {
+          "$ref": "#/$defs/RefusalResult"
+        },
+        {
+          "$ref": "#/$defs/MethodResult"
+        }
+      ],
+      "title": "Result"
+    },
+    "alternates": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Alternate"
+      },
+      "title": "Alternates",
+      "type": "array"
+    },
+    "evidence": {
+      "additionalProperties": true,
+      "title": "Evidence",
+      "type": "object"
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Provenance"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "task_id",
+    "status",
+    "result",
+    "evidence"
+  ],
+  "title": "GoldResult",
+  "type": "object"
+}

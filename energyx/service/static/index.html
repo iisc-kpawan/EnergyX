@@ -1,0 +1,1652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EnergyX</title>
+<style>
+  :root{
+    --bg:#fbfbf9; --surface:#fff; --surface-2:#f6f6f3; --surface-3:#eeeee9;
+    --ink:#15150f; --ink-2:#56554d; --ink-3:#87867d;
+    --line:#e6e5de; --line-2:#d5d4ca;
+    --accent:#1d6fd1; --accent-2:#4a92e8; --accent-soft:#e9f1fd; --accent-ink:#175aa9;
+    --ok:#11946a; --ok-soft:#e4f5ee;
+    --warn:#b07500; --warn-soft:#fcf2df;
+    --bad:#d03f3e; --bad-soft:#fcebea;
+    --grid:#ecebe4;
+    --shadow:0 1px 2px rgba(20,20,15,.05),0 8px 24px -14px rgba(20,20,15,.22);
+  }
+  :root[data-theme=dark]{
+    --bg:#121211; --surface:#1b1b19; --surface-2:#222220; --surface-3:#2a2a27;
+    --ink:#f3f3ef; --ink-2:#b6b5ad; --ink-3:#88877f;
+    --line:#2f2e2b; --line-2:#3b3a36;
+    --accent:#5c9def; --accent-2:#8dbcf6; --accent-soft:#152437; --accent-ink:#8dbcf6;
+    --ok:#3cc48d; --ok-soft:#11271e; --warn:#e0a33c; --warn-soft:#292012;
+    --bad:#f0716f; --bad-soft:#2d1716; --grid:#2b2a27;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -16px rgba(0,0,0,.7);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+    --bg:#121211; --surface:#1b1b19; --surface-2:#222220; --surface-3:#2a2a27;
+    --ink:#f3f3ef; --ink-2:#b6b5ad; --ink-3:#88877f;
+    --line:#2f2e2b; --line-2:#3b3a36;
+    --accent:#5c9def; --accent-2:#8dbcf6; --accent-soft:#152437; --accent-ink:#8dbcf6;
+    --ok:#3cc48d; --ok-soft:#11271e; --warn:#e0a33c; --warn-soft:#292012;
+    --bad:#f0716f; --bad-soft:#2d1716; --grid:#2b2a27;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -16px rgba(0,0,0,.7);
+  }}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.62 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  button,input,textarea{font:inherit;color:inherit}
+  .app{display:flex;flex-direction:column;height:100dvh}
+  .col{width:100%;max-width:780px;margin:0 auto;padding:0 22px}
+
+  /* ---- header ---- */
+  .topbar{position:sticky;top:0;z-index:30;
+    background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line)}
+  .topbar .col{display:flex;align-items:center;gap:12px;padding-top:11px;padding-bottom:11px}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+  .mark{width:30px;height:30px;flex:none;border-radius:9px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,.18)}
+  .wordmark{font-size:17.5px;font-weight:660;letter-spacing:-.025em;line-height:1}
+  .wordmark small{display:block;font-size:10.5px;font-weight:500;letter-spacing:.03em;
+    color:var(--ink-3);text-transform:uppercase;margin-top:2px}
+  .grow{flex:1}
+  .btn{display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:10px;padding:8px 13px;cursor:pointer;
+    color:var(--ink-2);font-size:13px;font-weight:550;white-space:nowrap;
+    transition:background .15s,color .15s,border-color .15s}
+  .btn:hover{background:var(--surface-3);color:var(--ink);border-color:var(--line-2)}
+  .btn svg{width:16px;height:16px;fill:currentColor;flex:none}
+
+  .statusbar{border-bottom:1px solid var(--line);background:var(--surface-2)}
+  .statusbar .col{display:flex;gap:7px;flex-wrap:wrap;padding-top:7px;padding-bottom:7px}
+  .chip{font-size:11.5px;color:var(--ink-2);white-space:nowrap}
+  .chip b{color:var(--ink);font-weight:640;font-variant-numeric:tabular-nums}
+  .chip+.chip::before{content:"·";margin-right:7px;color:var(--ink-3)}
+
+  /* ---- feed ---- */
+  .feed{flex:1;overflow-y:auto;overflow-x:hidden}
+  .feed .col{display:flex;flex-direction:column;gap:20px;
+    padding-top:28px;padding-bottom:10px}
+
+  .hero{text-align:center;padding:52px 0 26px}
+  .hero .mark-lg{width:52px;height:52px;margin:0 auto 18px;border-radius:15px;overflow:hidden;
+    box-shadow:var(--shadow)}
+  .hero h1{font-size:28px;margin:0 0 10px;letter-spacing:-.032em;font-weight:680;line-height:1.2}
+  .hero p{margin:0 auto;max-width:470px;color:var(--ink-2);font-size:14.5px}
+  .lead{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);
+    font-weight:640;margin:34px 0 12px}
+  .examples{display:flex;flex-direction:column;gap:7px;text-align:left}
+  .ex{background:var(--surface);border:1px solid var(--line);border-radius:11px;
+    padding:11px 14px;cursor:pointer;font-size:13.5px;color:var(--ink-2);line-height:1.5;
+    display:flex;align-items:flex-start;gap:10px;text-align:left;
+    transition:border-color .15s,box-shadow .15s,transform .1s,color .15s}
+  .ex>span{min-width:0;flex:1;text-wrap:pretty}
+  .ex code{font:inherit;font-size:12.5px;background:var(--bg);border:1px solid var(--line);
+    border-radius:5px;padding:0 4px;white-space:nowrap}
+  .ex:hover{border-color:var(--line-2);color:var(--ink);box-shadow:var(--shadow);
+    transform:translateY(-1px)}
+  .ex::after{content:"→";margin-left:auto;color:var(--ink-3);flex:none;line-height:1.5}
+
+  .msg-user{align-self:flex-end;max-width:min(620px,92%);background:var(--accent);color:#fff;
+    padding:11px 16px;border-radius:17px 17px 5px 17px;font-size:14.5px;line-height:1.5;
+    box-shadow:var(--shadow);word-wrap:break-word}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:15px;
+    box-shadow:var(--shadow);overflow:hidden}
+  .card-head{display:flex;align-items:center;gap:8px;padding:10px 16px;flex-wrap:wrap;
+    border-bottom:1px solid var(--line);background:var(--surface-2)}
+  .mono{font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink-2)}
+  .pill{font-size:11px;font-weight:620;border-radius:100px;padding:3px 9px;white-space:nowrap}
+  .pill.ok{color:var(--ok);background:var(--ok-soft)}
+  .pill.warn{color:var(--warn);background:var(--warn-soft)}
+  .pill.bad{color:var(--bad);background:var(--bad-soft)}
+  .pill.plain{color:var(--ink-2);background:var(--surface-3)}
+  .body{padding:16px}
+
+  .summary{font-size:15px;line-height:1.65;margin:0 0 14px;color:var(--ink)}
+  .summary b{font-weight:650}
+  .summary .unit{color:var(--ink-2);font-weight:400}
+  .prose{white-space:pre-wrap;word-wrap:break-word;margin:0 0 12px;font-size:14.5px}
+  .prose:last-child{margin-bottom:0}
+
+  figure{margin:0 0 14px}
+  figcaption{font-size:11.5px;color:var(--ink-3);margin-bottom:9px;
+    display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+  figcaption b{color:var(--ink-2);font-weight:600}
+  .chart{width:100%;overflow:visible;display:block}
+  .chart .grid{stroke:var(--grid);stroke-width:1}
+  .chart .axis{fill:var(--ink-3);font-size:10.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .chart .lbl{fill:var(--ink-2);font-size:11.5px}
+  .chart .val{fill:var(--ink);font-size:11px;font-weight:620;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .chart .bar{fill:var(--accent);rx:3}
+  .chart .bar.dim{fill:var(--accent-2);opacity:.55}
+  .chart .line{fill:none;stroke:var(--accent);stroke-width:2;
+    stroke-linejoin:round;stroke-linecap:round}
+  .chart .area{fill:var(--accent);opacity:.09}
+  .chart .dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+  .chart .hit{fill:transparent;cursor:crosshair}
+  .chart .hit:hover+.mk,.chart .mk.on{opacity:1}
+  .tip{position:fixed;pointer-events:none;z-index:60;background:var(--surface);
+    border:1px solid var(--line-2);border-radius:9px;padding:7px 10px;font-size:12px;
+    box-shadow:var(--shadow);opacity:0;transition:opacity .1s;white-space:nowrap;color:var(--ink)}
+  .tip b{font-variant-numeric:tabular-nums}
+
+  .tbl-head{display:flex;align-items:center;gap:10px;margin:0 0 7px;flex-wrap:wrap}
+  .tbl-title{font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--ink-3);font-weight:640}
+  .btn.dl{margin-left:auto;text-decoration:none;padding:4px 10px;font-size:11.5px}
+  .tbl-wrap{overflow:auto;max-height:360px;border:1px solid var(--line);
+    border-radius:11px;margin:0 0 12px;overscroll-behavior:contain}
+  .tbl-wrap.short{max-height:none}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  thead th{background:var(--surface-2);text-align:left;font-weight:620;font-size:10.5px;
+    text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);padding:8px 12px;
+    border-bottom:1px solid var(--line);white-space:nowrap;
+    /* Its own layer, or a scrolled row paints over the column names. */
+    position:sticky;top:0;z-index:2}
+  tbody td{padding:7px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:var(--surface-2)}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+  th.num{text-align:right}
+  td.flag{color:var(--warn);font-weight:650}
+  .more{font-size:12px;color:var(--ink-3);margin:-4px 0 12px}
+  .facts-row{display:flex;gap:6px;flex-wrap:wrap}
+  .fact{font-size:11.5px;color:var(--ink-2);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:7px;padding:2px 8px}
+  .fact b{color:var(--ink);font-weight:620}
+
+  .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 16px;
+    border-top:1px solid var(--line);background:var(--surface-2)}
+  details{border-top:1px solid var(--line)}
+  summary{cursor:pointer;font-size:12.5px;color:var(--ink-2);padding:9px 16px;
+    user-select:none;list-style:none;display:flex;align-items:center;gap:7px}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"";width:0;height:0;border-left:4px solid currentColor;
+    border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;
+    transition:transform .15s;opacity:.6;flex:none}
+  details[open]>summary::before{transform:rotate(90deg)}
+  summary:hover{color:var(--ink);background:var(--surface-2)}
+  .det{padding:0 16px 14px}
+  pre{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+    padding:11px 13px;overflow-x:auto;margin:0;
+    font:11.5px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink-2)}
+  .step{display:flex;gap:9px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .step:last-child{border-bottom:none}
+  .step-id{font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink-3);
+    flex:none;min-width:22px}
+  .step-tool{font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:620}
+  .step-why{color:var(--ink-3);font-size:12.5px;margin-top:2px}
+  a{color:var(--accent-ink)}
+
+  /* ---- composer ---- */
+  .composer{position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 60%,transparent);
+    padding-top:16px;padding-bottom:16px}
+  .box{display:flex;align-items:flex-end;gap:9px;background:var(--surface);
+    border:1px solid var(--line-2);border-radius:16px;padding:8px 8px 8px 15px;
+    box-shadow:var(--shadow);transition:border-color .15s,box-shadow .15s}
+  .box:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  textarea{flex:1;border:none;background:none;resize:none;outline:none;padding:7px 0;
+    max-height:180px;font-size:15px;line-height:1.5}
+  textarea::placeholder{color:var(--ink-3)}
+  .send{background:var(--accent);border:none;border-radius:11px;height:36px;padding:0 13px;
+    display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#fff;flex:none;
+    font-size:13px;font-weight:620;transition:opacity .15s}
+  .send svg{width:14px;height:14px;fill:#fff}
+  .send:disabled{opacity:.42;cursor:default}
+  .under{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap;
+    justify-content:center;font-size:11.5px;color:var(--ink-3)}
+  .seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);
+    border-radius:9px;padding:2px}
+  .seg button{background:none;border:none;border-radius:7px;padding:4px 10px;font-size:12px;
+    font-weight:600;color:var(--ink-3);cursor:pointer;transition:background .15s,color .15s}
+  .seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);
+    box-shadow:0 1px 2px rgba(0,0,0,.09)}
+  .linkish{background:none;border:none;padding:0;cursor:pointer;font-size:11.5px;
+    color:var(--ink-3);text-decoration:underline;text-underline-offset:2px}
+  .linkish:hover{color:var(--ink-2)}
+  .note{font-size:11.5px;color:var(--ink-3)}
+
+  .thinking{display:flex;align-items:center;gap:10px;color:var(--ink-2);font-size:13.5px;
+    padding:16px}
+  .dots{display:inline-flex;gap:3px}
+  .dots i{width:5px;height:5px;border-radius:50%;background:var(--accent);
+    animation:b 1.2s ease-in-out infinite}
+  .dots i:nth-child(2){animation-delay:.16s}
+  .dots i:nth-child(3){animation-delay:.32s}
+  @keyframes b{0%,60%,100%{opacity:.25;transform:translateY(0)}
+               30%{opacity:1;transform:translateY(-3px)}}
+
+  @media(max-width:640px){
+    .col{padding:0 15px}
+    .hero{padding:30px 0 16px}
+    .hero h1{font-size:23px}
+    .btn span{display:none}
+    .btn{padding:6px 8px}
+    .wordmark small{display:none}
+  }
+  .lead-answer{font-size:1.22rem;line-height:1.45;margin:0 0 .55rem;
+    color:var(--text);font-weight:450}
+  .lead-answer b{font-weight:650}
+  /* Drill-down: country -> site -> building -> year. Navigation only; the
+     snapshot layout is untouched. */
+  .drawer{border-bottom:1px solid var(--line);background:var(--surface)}
+  .drawer .col{padding:.7rem 0 .9rem}
+  .crumbs{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;
+    font-size:.82rem;margin-bottom:.6rem}
+  .crumbs button{background:none;border:0;padding:.15rem .35rem;cursor:pointer;
+    color:var(--accent);font:inherit;border-radius:5px}
+  .crumbs button:hover{background:var(--sunk)}
+  .crumbs span.sep{color:var(--muted)}
+  .crumbs span.here{color:var(--text);font-weight:600;padding:.15rem .35rem}
+  .browse-rows{display:grid;gap:2px;max-height:44vh;overflow-y:auto}
+  .brow{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:center;
+    padding:.42rem .6rem;border-radius:7px;cursor:pointer;border:1px solid transparent}
+  .brow:hover{background:var(--sunk);border-color:var(--line)}
+  .brow.leaf{cursor:default}
+  .brow.leaf:hover{background:none;border-color:transparent}
+  .brow .nm{font-weight:550}
+  .brow .meta{color:var(--muted);font-size:.8rem;font-variant-numeric:tabular-nums;
+    text-align:right}
+  .browse-empty{color:var(--muted);font-size:.85rem;padding:.5rem .6rem}
+
+/* What the system understood, before it plans anything. Deliberately quiet:
+   it is a check, not a form, and most questions are read correctly. */
+.reading{margin-top:10px;padding:12px 14px;border:1px solid var(--line);
+  border-radius:12px;background:var(--panel,transparent)}
+.reading .rhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  font-size:12px;color:var(--mut);margin-bottom:10px}
+.reading .rhead b{font-size:12.5px;color:var(--fg);font-weight:600}
+.reading .grid{display:flex;flex-wrap:wrap;gap:8px}
+.rchip{border:1px solid var(--line);border-radius:10px;padding:7px 10px;
+  min-width:128px;cursor:pointer;background:transparent;text-align:left;
+  font:inherit;color:inherit;transition:border-color .12s,background .12s}
+.rchip:hover,.rchip:focus-visible{border-color:var(--fg);outline:none}
+.rchip .k{display:block;font-size:10px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--mut)}
+.rchip .v{display:block;font-size:13px;margin-top:2px;
+  font-variant-numeric:tabular-nums}
+.rchip .d{display:block;font-size:11px;color:var(--mut);margin-top:1px}
+.rchip.edited{border-color:var(--accent,#b45309)}
+.rchip.edited .k::after{content:" · edited";color:var(--accent,#b45309)}
+.reading .amb{margin-top:10px;font-size:12px;color:var(--mut)}
+.reading .amb b{color:var(--fg);font-weight:600}
+.redit{margin-top:10px;padding:10px 12px;border:1px dashed var(--line);
+  border-radius:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.redit label{display:flex;flex-direction:column;gap:3px;font-size:11px;
+  color:var(--mut)}
+.redit input,.redit select{font:inherit;font-size:13px;padding:5px 7px;
+  border:1px solid var(--line);border-radius:7px;background:transparent;
+  color:inherit;min-width:150px}
+.redit .acts{display:flex;gap:6px;margin-left:auto}
+.redit button{font:inherit;font-size:12px;padding:6px 11px;border-radius:8px;
+  border:1px solid var(--line);background:transparent;color:inherit;
+  cursor:pointer}
+.redit button.primary{border-color:var(--fg)}
+.box .check{background:transparent;border:1px solid var(--line);color:inherit;
+  border-radius:10px;padding:0 12px;display:inline-flex;align-items:center;
+  gap:6px;cursor:pointer;font:inherit;font-size:13px}
+.box .check:hover{border-color:var(--fg)}
+.box .check svg{width:15px;height:15px;fill:currentColor}
+@media (max-width:520px){.rchip{min-width:calc(50% - 4px)}}
+
+/* ================= reviewer layout: conversation left, rail right ========= */
+.shell{display:flex;height:100dvh;overflow:hidden}
+.app{flex:1;min-width:0}
+.col{max-width:820px;margin:0 auto 0 0}
+
+.rail{width:420px;flex:none;order:-1;border-right:1px solid var(--line);
+  background:var(--surface-2);display:flex;flex-direction:column;overflow:hidden}
+.rail-head{padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.rail-head h2{margin:0 0 3px;font-size:13px;font-weight:650;letter-spacing:-.01em}
+.rail-head p{margin:0;font-size:11.5px;color:var(--ink-3);line-height:1.5}
+
+.disclaimer{margin:12px 16px;padding:11px 13px;border-radius:10px;
+  background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 30%,transparent)}
+.disclaimer b{display:block;font-size:12px;color:var(--warn);margin-bottom:3px}
+.disclaimer p{margin:0;font-size:11.5px;line-height:1.55;color:var(--ink-2)}
+.disclaimer p + p{margin-top:6px}
+
+.qfilters{display:grid;grid-template-columns:1fr auto;gap:7px;padding:10px 16px;
+  border-bottom:1px solid var(--line)}
+.qfilters input{grid-column:1 / -1}
+.qfilters select,.qfilters input{background:var(--surface);border:1px solid var(--line-2);
+  border-radius:9px;padding:7px 10px;font-size:12.5px;color:var(--ink);min-width:0;
+  min-height:34px}
+.qcount{padding:7px 16px;font-size:11px;color:var(--ink-3);
+  display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+.qcount .grow{flex:1}
+.qcount button{background:var(--surface);border:1px solid var(--line-2);border-radius:8px;
+  padding:5px 11px;font-size:12px;font-weight:550;color:var(--ink-2);cursor:pointer}
+.qcount button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.qcount button:disabled{opacity:.45;cursor:default}
+
+.qlist{flex:1;overflow-y:auto;padding:6px 10px 18px}
+.qitem{display:flex;gap:9px;align-items:flex-start;width:100%;text-align:left;
+  background:none;border:1px solid transparent;border-radius:9px;padding:8px 9px;
+  cursor:pointer;color:var(--ink-2);font-size:12.5px;line-height:1.5}
+.qitem:hover{background:var(--surface);border-color:var(--line)}
+.qitem[aria-current=true]{background:var(--accent-soft);border-color:var(--accent-2)}
+.qid{flex:none;font-size:10.5px;font-weight:650;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;padding-top:1px;min-width:26px}
+.qtext{flex:1;min-width:0;text-wrap:pretty}
+.qmark{flex:none;width:15px;height:15px;border-radius:50%;margin-top:1px;
+  display:grid;place-items:center;font-size:9px;font-weight:700;color:#fff}
+.qmark.ok{background:var(--ok)}
+.qmark.bad{background:var(--bad)}
+.qmark.run{background:var(--ink-3)}
+.qlev{flex:none;font-size:9.5px;font-weight:650;letter-spacing:.03em;color:var(--ink-3);
+  border:1px solid var(--line-2);border-radius:5px;padding:0 4px;margin-top:1px}
+
+.modelpick{display:inline-flex;align-items:center;gap:6px}
+.modelpick label{font-size:12.5px;font-weight:550;color:var(--ink-2)}
+.modelpick select{background:var(--surface);border:1px solid var(--line-2);
+  border-radius:9px;padding:7px 11px;font-size:13px;font-weight:550;
+  color:var(--ink);cursor:pointer;min-height:34px}
+.modelpick select:hover{border-color:var(--line-2)}
+
+
+.narration{margin:0 0 14px;padding:11px 13px;border-radius:10px;
+  background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)}
+.narration span{display:block;font-size:10px;font-weight:650;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent-ink);margin-bottom:4px}
+.narration p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink)}
+
+/* ================= right-hand guide ================= */
+.guide{width:340px;flex:none;border-left:1px solid var(--line);background:var(--surface-2);
+  display:flex;flex-direction:column;overflow-y:auto}
+.guide-in{padding:16px 17px 26px}
+.guide h2{margin:0 0 4px;font-size:13px;font-weight:650;letter-spacing:-.01em}
+.guide .intro{margin:0 0 16px;font-size:11.5px;color:var(--ink-3);line-height:1.55}
+.guide h3{margin:18px 0 7px;font-size:11px;font-weight:650;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink-3);
+  padding-bottom:5px;border-bottom:1px solid var(--line)}
+.gitem{display:flex;gap:9px;align-items:flex-start;margin:9px 0}
+.gkey{flex:none;font-size:10.5px;font-weight:650;color:var(--accent);
+  background:var(--accent-soft);border-radius:6px;padding:2px 7px;margin-top:1px;
+  white-space:nowrap}
+.gitem p{margin:0;font-size:11.5px;line-height:1.55;color:var(--ink-2)}
+.guide .fact{display:flex;justify-content:space-between;gap:10px;font-size:11.5px;
+  padding:5px 0;border-bottom:1px dotted var(--line)}
+.guide .fact:last-child{border-bottom:0}
+.guide .fact b{font-weight:600;color:var(--ink-2)}
+.guide .fact span{color:var(--ink-3);text-align:right}
+.guide .foot{margin-top:18px;font-size:11px;color:var(--ink-3);line-height:1.55}
+@media (max-width:1560px){.guide{width:300px}}
+@media (max-width:1280px){.guide{display:none}}
+
+/* ================= landing ================= */
+.landing{position:fixed;inset:0;z-index:60;background:var(--bg);overflow-y:auto}
+.landing-in{max-width:860px;margin:0 auto;padding:44px 24px 72px}
+.landing h1{font-size:30px;line-height:1.15;letter-spacing:-.03em;margin:0 0 10px;
+  text-wrap:balance}
+.landing .sub{font-size:15.5px;color:var(--ink-2);margin:0 0 26px;max-width:62ch}
+.landing h2{font-size:15px;letter-spacing:-.01em;margin:30px 0 10px;
+  padding-bottom:6px;border-bottom:1px solid var(--line)}
+.landing h3{font-size:12.5px;margin:16px 0 6px;color:var(--ink-2)}
+.landing p,.landing li{font-size:13.5px;line-height:1.65;color:var(--ink-2)}
+.landing ul{margin:6px 0;padding-left:20px}
+.landing li{margin:3px 0}
+.landing code{background:var(--surface-3);border-radius:4px;padding:1px 5px;font-size:12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin:10px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:12px 13px}
+.card b{display:block;font-size:12.5px;margin-bottom:3px}
+.card span{font-size:11.5px;color:var(--ink-3);line-height:1.5;display:block}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin:12px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+.stat b{display:block;font-size:19px;font-weight:660;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.stat span{font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:10px 0}
+@media (max-width:660px){.two{grid-template-columns:1fr}}
+.does li::marker{color:var(--ok)}
+.doesnt li::marker{color:var(--bad)}
+.statusrow{display:flex;gap:9px;align-items:flex-start;padding:8px 0;
+  border-bottom:1px solid var(--line)}
+.statusrow:last-child{border-bottom:0}
+.tag{flex:none;font-size:10px;font-weight:650;letter-spacing:.03em;border-radius:5px;
+  padding:2px 7px;margin-top:2px;text-transform:uppercase}
+.tag.works{background:var(--ok-soft);color:var(--ok)}
+.tag.partial{background:var(--warn-soft);color:var(--warn)}
+.tag.no{background:var(--bad-soft);color:var(--bad)}
+.start{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;
+  border:0;border-radius:11px;padding:12px 22px;font-size:14.5px;font-weight:600;
+  cursor:pointer;margin-top:26px;box-shadow:var(--shadow)}
+.start:hover{background:var(--accent-ink)}
+.start svg{width:17px;height:17px;fill:currentColor}
+.landing .note{font-size:11.5px;color:var(--ink-3);margin-top:10px}
+
+@media (max-width:1560px){.rail{width:370px}}
+@media (max-width:1100px){
+  .rail{position:fixed;left:0;top:0;bottom:0;width:min(420px,88vw);z-index:40;
+    transform:translateX(-100%);transition:transform .18s ease;box-shadow:var(--shadow)}
+  .rail[data-open=true]{transform:none}
+  .col{margin:0 auto}
+}
+@media (max-width:1100px){.railtoggle{display:inline-flex}}
+.railtoggle{display:none}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gx" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#2f86ea"/><stop offset="1" stop-color="#0f4f9e"/>
+  </linearGradient>
+  <symbol id="logo" viewBox="0 0 48 48">
+    <rect width="48" height="48" rx="12" fill="url(#gx)"/>
+    <rect x="10" y="27" width="5" height="11" rx="2" fill="#fff" opacity=".45"/>
+    <rect x="18" y="21" width="5" height="17" rx="2" fill="#fff" opacity=".45"/>
+    <rect x="26" y="24" width="5" height="14" rx="2" fill="#fff" opacity=".45"/>
+    <rect x="34" y="16" width="5" height="22" rx="2" fill="#fff" opacity=".45"/>
+    <path d="M27 7 15 25h7.5L20 41 34 21h-7.5z" fill="#fff"/>
+  </symbol>
+</defs></svg>
+
+<div class="landing" id="landing">
+ <div class="landing-in">
+  <h1>EnergyX — conversational analytics for building electricity data</h1>
+  <p class="sub">Ask in plain English. Agents plan the analysis, deterministic tools
+  compute the numbers, and every answer arrives with the plan behind it, the evidence
+  it rests on and a trace you can replay.</p>
+
+  <button class="start" id="startBtn" type="button">
+    <svg viewBox="0 0 24 24"><path d="M3 20.5 21 12 3 3.5 3 10l12 2-12 2z"/></svg>
+    Start asking questions
+  </button>
+  <p class="note">The 50 evaluation questions are listed on the left — select any
+  one to ask it.</p>
+
+  <div class="disclaimer">
+    <b>For reviewers only</b>
+    <p>This instance is provided so reviewers can examine the system. It is not
+    intended for general end-user use, and the link should not be shared
+    publicly or redistributed.</p>
+    <p><b style="display:inline">One reviewer at a time.</b> The deployment runs
+    on a single GPU and answers one question at a time, so if someone else is
+    mid-question yours will wait its turn.</p>
+  </div>
+
+  <h2>What it works with</h2>
+  <div class="statgrid">
+    <div class="stat"><b>1,578</b><span>metered buildings</span></div>
+    <div class="stat"><b>26.4M</b><span>hourly readings</span></div>
+    <div class="stat"><b>19</b><span>sites, 4 countries</span></div>
+    <div class="stat"><b>2016–17</b><span>hourly, with weather</span></div>
+  </div>
+
+  <h2>What you can ask</h2>
+  <p>Ten analytical areas, each with five questions in the evaluation set.</p>
+  <div class="cards">
+    <div class="card"><b>Data discovery</b><span>Which buildings, sites and cities exist, and what data covers them</span></div>
+    <div class="card"><b>Data quality</b><span>Coverage, gaps, duplicates, resampling</span></div>
+    <div class="card"><b>Consumption &amp; demand</b><span>Totals, peaks, baseload, year-on-year change</span></div>
+    <div class="card"><b>Load profiles</b><span>Daily and weekly shapes, operating patterns</span></div>
+    <div class="card"><b>Performance &amp; benchmarking</b><span>EUI, peer groups, ranking</span></div>
+    <div class="card"><b>Weather &amp; climate</b><span>Temperature sensitivity, weather normalisation</span></div>
+    <div class="card"><b>Spatial analytics</b><span>Comparison across cities, sites and regions</span></div>
+    <div class="card"><b>Forecasting</b><span>Short-horizon forecasts and their evaluation</span></div>
+    <div class="card"><b>Anomaly &amp; change</b><span>Outliers, change points, persistent shifts</span></div>
+    <div class="card"><b>Clustering &amp; similarity</b><span>Grouping load shapes, finding similar buildings</span></div>
+  </div>
+
+  <h2>Getting a good answer</h2>
+  <ul>
+    <li>Ask complete, self-contained questions — each one is answered on its own terms.</li>
+    <li>Name what you want: a building, a city, a period, a measure.</li>
+    <li>Questions are answered one at a time, so an answer may take a moment to arrive.</li>
+  </ul>
+  <p class="note">The system works from electricity data for 2016–2017 and says so
+  clearly whenever a question falls outside what the dataset holds.</p>
+ </div>
+</div>
+
+<div class="shell">
+<div class="app">
+  <div class="topbar"><div class="col">
+    <a class="logo" href="/">
+      <svg class="mark" viewBox="0 0 48 48"><use href="#logo"/></svg>
+      <span class="wordmark">EnergyX<small>Building energy analytics</small></span>
+    </a>
+    <span class="grow"></span>
+    <button class="btn" id="theme" type="button">
+      <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+      <span id="themeLabel">System</span>
+    </button>
+    <button class="btn" id="overview" type="button">
+      <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 4.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4zM11 11h2v6h-2z"/></svg>
+      <span>Overview</span>
+    </button>
+    <button class="btn railtoggle" id="railToggle" type="button">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <span>Questions</span>
+    </button>
+    <button class="btn" id="browse" type="button">
+      <svg viewBox="0 0 24 24"><path d="M3 5h7l2 2h9v12H3V5zm0 5h18"/></svg>
+      <span>Browse</span>
+    </button>
+    <button class="btn" id="clear" type="button">
+      <svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7zm3-3h6l1 2H8l1-2z"/></svg>
+      <span>Clear</span>
+    </button>
+  </div></div>
+
+  <div class="drawer" id="drawer" hidden><div class="col">
+    <nav class="crumbs" id="crumbs"></nav>
+    <div class="browse-rows" id="browseRows"></div>
+  </div></div>
+
+  <div class="statusbar"><div class="col" id="chips"><span class="chip">connecting…</span></div></div>
+
+  <div class="feed" id="feed"><div class="col" id="feedIn">
+    <div class="hero" id="hero">
+      <svg class="mark-lg" viewBox="0 0 48 48"><use href="#logo"/></svg>
+      <h1>Ask about building electricity</h1>
+      <p>Agents plan and verify. Deterministic tools compute the numbers.
+         Every answer carries its plan, its evidence and a replayable trace.</p>
+      <div class="lead">Try one</div>
+      <div class="examples" id="examples"></div>
+    </div>
+  </div></div>
+
+  <div class="composer"><div class="col">
+    <form id="form"><div class="box">
+      <textarea id="q" rows="1" autocomplete="off" spellcheck="false"
+        placeholder="Ask about buildings, load shapes, weather sensitivity, anomalies…"></textarea>
+      <button class="check" id="check" type="button" title="Show what the system understood before it runs anything">
+        <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 4.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4zM11 11h2v6h-2z"/></svg>Check
+      </button>
+      <button class="send" id="go" type="submit">
+        <svg viewBox="0 0 24 24"><path d="M3 20.5 21 12 3 3.5 3 10l12 2-12 2z"/></svg>Ask
+      </button>
+    </div></form>
+    <div class="reading" id="reading" hidden></div>
+    <div class="under">
+      <span class="modelpick" id="modelPick" hidden>
+        <label for="modelSel">Planner</label>
+        <select id="modelSel"></select>
+      </span>
+      <span>Enter to send, Shift+Enter for a new line</span>
+      <button type="button" class="linkish" id="toggleCompare" hidden>compare planners</button>
+      <span class="seg" id="seg" role="group" aria-label="Agent architecture" hidden>
+        <button type="button" data-mode="single" aria-pressed="true">Single agent</button>
+        <button type="button" data-mode="multi" aria-pressed="false">Multi-agent</button>
+      </span>
+      <span class="note" id="modeNote" hidden>single answers more correctly on
+        this model — multi is kept for comparison</span>
+    </div>
+  </div></div>
+</div>
+
+  <aside class="rail" id="rail">
+    <div class="rail-head">
+      <h2>Evaluation set — 50 questions</h2>
+      <p>The official set the reported scores come from. Click any question to ask it.</p>
+    </div>
+    <div class="disclaimer">
+      <b>Review use only</b>
+      <p>Provided for evaluation and review rather than for general use or
+      distribution. Questions are answered one at a time.</p>
+    </div>
+    <div class="qfilters">
+      <select id="fcat"><option value="">All categories</option></select>
+      <select id="flev">
+        <option value="">All levels</option>
+        <option>L1</option><option>L2</option><option>L3</option>
+        <option>L4</option><option>L5</option>
+      </select>
+      <input id="fq" type="search" placeholder="Filter…" aria-label="Filter questions">
+    </div>
+    <div class="qcount">
+      <span id="qcount">loading…</span><span class="grow"></span>
+      <button type="button" id="runAll">Run all</button>
+    </div>
+    <div class="qlist" id="qlist"></div>
+  </aside>
+
+  <aside class="guide" id="guide">
+   <div class="guide-in">
+    <h2>Using this interface</h2>
+    <p class="intro">A short guide to the controls, so nothing here has to be
+    discovered by trial.</p>
+
+    <h3>Asking</h3>
+    <div class="gitem"><span class="gkey">Question list</span>
+      <p>The 50 evaluation questions, on the left. Select one and it is asked
+      immediately. Filter by category, level or text.</p></div>
+    <div class="gitem"><span class="gkey">Run all</span>
+      <p>Asks every question currently shown, one after another. Press it again
+      to stop.</p></div>
+    <div class="gitem"><span class="gkey">Tick / cross</span>
+      <p>Appears beside a question once answered. It is the evaluation grader's
+      verdict, the same one that produced the reported figures — not a
+      self-assessment.</p></div>
+
+    <h3>Controls</h3>
+    <div class="gitem"><span class="gkey">Planner</span>
+      <p>Which model plans the analysis. The larger model takes longer to load
+      the first time you switch to it.</p></div>
+    <div class="gitem"><span class="gkey">Check</span>
+      <p>Shows what the system understood — entities, period, measure — before
+      it runs anything. Correct a reading here and ask with your correction.</p></div>
+    <div class="gitem"><span class="gkey">Browse</span>
+      <p>Walks the catalogue: countries, cities, sites, buildings. Useful for
+      finding a building name to ask about.</p></div>
+    <div class="gitem"><span class="gkey">Overview</span>
+      <p>Reopens the introduction.</p></div>
+
+    <h3>Reading an answer</h3>
+    <div class="gitem"><span class="gkey">Plan</span>
+      <p>The steps the agents chose, each with its tool and what it returned.</p></div>
+    <div class="gitem"><span class="gkey">Evidence</span>
+      <p>The filters, counts and intermediate values the answer rests on.</p></div>
+    <div class="gitem"><span class="gkey">Trace</span>
+      <p>The full run, replayable. Tables download in full as CSV.</p></div>
+
+    <h3>What it covers</h3>
+    <div class="fact"><b>Metered</b><span>Electricity</span></div>
+    <div class="fact"><b>Context</b><span>Site weather, metadata</span></div>
+    <div class="fact"><b>Period</b><span>2016–2017, hourly</span></div>
+    <div class="fact"><b>Buildings</b><span>1,578 metered</span></div>
+    <div class="fact"><b>Sites</b><span>19, in 4 countries</span></div>
+
+    <p class="foot">Ask complete, self-contained questions: each is answered on
+    its own, so a follow-up such as “and for 2016?” will not carry context from
+    the question before it. Electricity is the only metered channel, with site
+    weather and building metadata alongside it; a question outside that, or
+    outside 2016–2017, is answered by saying what is missing.</p>
+   </div>
+  </aside>
+</div>
+<div class="tip" id="tip"></div>
+<script>
+const $  = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* The service this page talks to. Empty means the page is served by it, which
+   is the local case. A copy hosted elsewhere sets window.ENERGYX_API to the
+   service's base URL before this script runs. */
+const API = (window.ENERGYX_API || "").replace(/\/$/, "");
+const api = path => API + path;
+const apiHeaders = API ? {"ngrok-skip-browser-warning": "1"} : {};
+
+const EXAMPLES = [
+  "How many buildings are located in London?",
+  "Which five office buildings in the UK had the highest electricity EUI in 2017?",
+  "Compare weekday and weekend load profiles for offices in London",
+  "Which education buildings have gaps longer than seven consecutive days?",
+  "What was the Pearson correlation between electricity use of `Fox_office_Alice` and air temperature in 2017?",
+  "Forecast the next 12 hours for `Lamb_education_Norris` from 00:00 on 8 May 2016 with Seasonal Naive, 7 days of history and a 24-hour season, and report the MAE."
+];
+let MODE = "single";   // flat planning, on measured evidence
+
+/* ---------- theme ---------- */
+const THEMES = ["system", "light", "dark"];
+let theme = (() => { try { return localStorage.getItem("energyx-theme") || "system"; }
+                     catch { return "system"; } })();
+function applyTheme(){
+  if (theme === "system") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", theme);
+  $("#themeLabel").textContent = theme[0].toUpperCase() + theme.slice(1);
+  try { localStorage.setItem("energyx-theme", theme); } catch {}
+  document.querySelectorAll(".card").forEach(c => { if (c._d) render(c, c._d); });
+}
+$("#theme").onclick = () => {
+  theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length]; applyTheme(); };
+applyTheme();
+
+/* ---------- snapshot ---------- */
+fetch(api("/health"), {headers: apiHeaders}).then(r => r.json()).then(h => {
+  const c = h.catalog, l = h.llm, n = v => Number(v).toLocaleString();
+  $("#chips").innerHTML = [
+    `<span class="chip"><b>${esc(h.snapshot)}</b></span>`,
+    `<span class="chip"><b>${n(c.buildings)}</b> buildings</span>`,
+    `<span class="chip"><b>${n(c.streams)}</b> streams</span>`,
+    `<span class="chip"><b>${c.datasets}</b> datasets</span>`,
+    `<span class="chip"><b>${h.tools.runtime}</b> tools</span>`,
+    `<span class="chip"><b>${n(h.graph_triples)}</b> triples</span>`,
+    `<span class="chip">${l.planner === "deterministic" ? "deterministic planner"
+       : esc(l.provider + " · " + l.model)}</span>`
+  ].join("");
+}).catch(() => { $("#chips").innerHTML = `<span class="chip">snapshot unavailable</span>`; });
+
+EXAMPLES.forEach(t => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "ex";
+  // The whole question is shown. A `backticked` identifier becomes a code
+  // span: the marks matter to the planner and should not be read as
+  // punctuation by everyone else.
+  b.innerHTML = `<span>${esc(t).replace(/`([^`]+)`/g, "<code>$1</code>")}</span>`;
+  b.onclick = () => { $("#q").value = t; submit(); };
+  $("#examples").appendChild(b);
+});
+
+/* ---------- composer ---------- */
+const ta = $("#q");
+const grow = () => { ta.style.height = "auto";
+                     ta.style.height = Math.min(ta.scrollHeight, 180) + "px"; };
+ta.addEventListener("input", grow);
+ta.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } });
+// The planner toggle is off the screen entirely: every answer is planned flat,
+// on measured evidence. The control still exists because flat-vs-
+// hierarchical is a result this project has to report, but it is reachable only
+// by URL, so nobody is asked to choose an architecture. ?mode=multi in the
+// URL selects it directly, for scripted comparison runs.
+const params = new URLSearchParams(location.search);
+if (params.get("mode") === "multi" || params.has("compare")) showCompare();
+function showCompare(){
+  $("#toggleCompare").hidden = true;
+  $("#seg").hidden = false; $("#modeNote").hidden = false;
+  if (params.get("mode") === "multi") {
+    MODE = "multi";
+    [...$("#seg").children].forEach(b =>
+      b.setAttribute("aria-pressed", b.dataset.mode === "multi"));
+  }
+}
+$("#toggleCompare").onclick = showCompare;
+$("#browse").onclick = () => {
+  BROWSE.open = !BROWSE.open;
+  $("#drawer").hidden = !BROWSE.open;
+  if (BROWSE.open && !$("#browseRows").children.length) browseLoad();
+};
+
+$("#seg").addEventListener("click", e => {
+  const b = e.target.closest("button[data-mode]"); if (!b) return;
+  MODE = b.dataset.mode;
+  [...$("#seg").children].forEach(x => x.setAttribute("aria-pressed", x === b)); });
+$("#form").addEventListener("submit", e => { e.preventDefault(); submit(); });
+$("#check").addEventListener("click", () => refreshReading());
+// Editing the question invalidates a reading of the old one. The panel is
+// hidden rather than re-fetched on every keystroke: it is a check the reader
+// asks for, not a thing that follows them around.
+$("#q").addEventListener("input", () => {
+  if (READING){ READING = null; OVERRIDES = {}; renderReading(null); }
+});
+$("#clear").onclick = () => {
+  [...$("#feedIn").children].forEach(c => { if (c.id !== "hero") c.remove(); });
+  $("#hero").style.display = ""; };
+const scrollDown = () => { $("#feed").scrollTop = $("#feed").scrollHeight; };
+
+async function submit(qid){
+  const question = ta.value.trim();
+  if (!question || $("#go").disabled) return;
+  // Captured now: the field is cleared before the answer arrives.
+  const evalId = qid || null;
+  if (evalId) markQuestion(evalId, "run");
+  $("#hero").style.display = "none";
+  // The corrections belong to the question being sent, and the panel clears
+  // with it -- a chip left on screen after the answer reads as though it
+  // still applies to the next question.
+  const corrections = {...OVERRIDES};
+  ta.value = ""; grow(); $("#go").disabled = true;
+  OVERRIDES = {}; READING = null; renderReading(null);
+
+  const you = document.createElement("div");
+  you.className = "msg-user"; you.textContent = question;
+  $("#feedIn").appendChild(you);
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `<div class="thinking"><span class="dots"><i></i><i></i><i></i></span>
+    <span class="stage">planning…</span></div>`;
+  $("#feedIn").appendChild(card); scrollDown();
+
+  const stages = ["planning…","choosing tools…","running tools…",
+                  "checking evidence…","verifying…"];
+  let i = 0;
+  const tick = setInterval(() => {
+    i = Math.min(i + 1, stages.length - 1);
+    const el = card.querySelector(".stage"); if (el) el.textContent = stages[i]; }, 4200);
+
+  try {
+    const res = await fetch(api("/ask"), {method:"POST",
+      headers:{"Content-Type":"application/json", ...apiHeaders},
+      body: JSON.stringify({question, mode: MODE, model: MODEL,
+        // Only what the reader actually changed travels with the question.
+        // An unedited run must be indistinguishable from one asked before
+        // this panel existed, or every number in the evaluation changes
+        // meaning.
+        intent_overrides: Object.keys(corrections).length ? corrections : null})});
+    if (!res.ok) throw new Error((await res.json().catch(()=>({}))).detail || res.statusText);
+    const d = await res.json(); card._d = d; render(card, d);
+    if (evalId) gradeAnswer(evalId, d.answer || "");
+  } catch (err) {
+    card.innerHTML = `<div class="body"><div class="prose">${esc(err.message)}</div></div>
+      <div class="meta"><span class="pill bad">request failed</span></div>`;
+    if (evalId) markQuestion(evalId, "bad", "request failed");
+  } finally { clearInterval(tick); $("#go").disabled = false; ta.focus(); scrollDown(); }
+}
+
+/* ---------- what the system understood ----------
+
+   The panel shows the *resolved intent* -- the thing planning is actually
+   built from -- rather than a rewritten question. Two reasons it is this and
+   not that. A rewrite hides what changed: the reader asks one question, the
+   system answers another, and the gap is invisible. And the resolver is rules
+   over the catalog, so this costs no model call and can be shown for every
+   question rather than only the suspicious ones.
+
+   It earns its place on questions like "compare the average weekday load
+   profile versus the weekend load profile for site Fox", which was read as a
+   comparison *between sites*: the answer was confident, wrong, and said
+   nothing about the reading that produced it. A chip reading "About: sites"
+   is wrong at a glance. */
+let OVERRIDES = {};
+let READING = null;
+
+function chipValue(chip){
+  // A category choice arrives as "9 — Forecasting & prediction"; the intent
+  // wants the number.
+  return chip;
+}
+
+function renderReading(d){
+  READING = d;
+  const box = $("#reading");
+  if (!d){ box.hidden = true; box.innerHTML = ""; return; }
+  const edited = new Set(Object.keys(OVERRIDES));
+  const chips = d.chips.map((c, i) => {
+    const was = edited.has(c.field) ? " edited" : "";
+    return `<button class="rchip${was}" data-i="${i}" type="button">
+      <span class="k">${esc(c.label)}</span>
+      <span class="v">${esc(c.value)}</span>
+      ${c.detail ? `<span class="d">${esc(c.detail)}</span>` : ""}
+    </button>`;
+  }).join("");
+  const amb = (d.ambiguities || []).length
+    ? `<div class="amb"><b>Unsettled:</b> ${d.ambiguities.map(esc).join("; ")}</div>`
+    : "";
+  const scope = d.out_of_scope
+    ? `<div class="amb"><b>Not in this snapshot:</b> ${esc(d.out_of_scope)}</div>`
+    : "";
+  box.innerHTML = `<div class="rhead"><b>What I understood</b>
+      <span>click any chip to change it — nothing has run yet</span>
+      ${Object.keys(OVERRIDES).length
+        ? `<button type="button" class="linkish" id="rreset">reset</button>` : ""}
+    </div>
+    <div class="grid">${chips}</div>${amb}${scope}
+    <div id="rform"></div>`;
+  box.hidden = false;
+  box.querySelectorAll(".rchip").forEach(b =>
+    b.onclick = () => editChip(d.chips[+b.dataset.i]));
+  const reset = $("#rreset");
+  if (reset) reset.onclick = () => { OVERRIDES = {}; refreshReading(); };
+}
+
+function editChip(chip){
+  const form = $("#rform");
+  const fields = (chip.inputs || []).map(inp => {
+    const v = inp.value == null ? "" : (Array.isArray(inp.value)
+      ? inp.value.join(", ") : inp.value);
+    if (inp.kind === "choice"){
+      const opts = (inp.options || []).map(o =>
+        `<option${String(o).split(" — ")[0] === String(v) || o === v
+          ? " selected" : ""}>${esc(o)}</option>`).join("");
+      return `<label>${esc(inp.label)}
+        <select data-n="${esc(inp.name)}"><option value=""></option>${opts}</select></label>`;
+    }
+    return `<label>${esc(inp.label)}
+      <input data-n="${esc(inp.name)}" value="${esc(v)}"
+        placeholder="${inp.kind === "date" ? "YYYY-MM-DD" : ""}"></label>`;
+  }).join("");
+  form.innerHTML = `<div class="redit">${fields}
+    <span class="acts">
+      <button type="button" id="rcancel">cancel</button>
+      <button type="button" class="primary" id="rapply">apply</button>
+    </span></div>`;
+  $("#rcancel").onclick = () => { form.innerHTML = ""; };
+  $("#rapply").onclick = () => {
+    const values = {};
+    form.querySelectorAll("[data-n]").forEach(el => {
+      let v = el.value.trim();
+      // "9 — Forecasting & prediction" -> "9". The label is for the reader.
+      if (v.includes(" — ")) v = v.split(" — ")[0];
+      values[el.dataset.n] = v === "" ? "" : v;
+    });
+    if (chip.field === "entities"){
+      const ids = (values.building_ids || "").split(/[,\s]+/).filter(Boolean);
+      OVERRIDES.entities = {...(OVERRIDES.entities || {}),
+        building_ids: ids.length ? ids : "",
+        site_id: values.site_id, city: values.city,
+        building_type: values.building_type};
+    } else if (chip.field === "time_range"){
+      OVERRIDES.time_range = {...(OVERRIDES.time_range || {}),
+        start: values.start, end: values.end};
+    } else {
+      const only = Object.values(values)[0];
+      if (only === "") delete OVERRIDES[chip.field];
+      else OVERRIDES[chip.field] = only;
+    }
+    form.innerHTML = "";
+    refreshReading();
+  };
+}
+
+async function refreshReading(){
+  const question = $("#q").value.trim();
+  if (!question){ renderReading(null); return; }
+  try {
+    const res = await fetch(api("/interpret"), {method:"POST",
+      headers:{"Content-Type":"application/json", ...apiHeaders},
+      body: JSON.stringify({question,
+        intent_overrides: Object.keys(OVERRIDES).length ? OVERRIDES : null})});
+    if (!res.ok) throw new Error(res.statusText);
+    renderReading(await res.json());
+  } catch (err){
+    const box = $("#reading");
+    box.hidden = false;
+    box.innerHTML = `<div class="rhead"><b>Could not read the question</b>
+      <span>${esc(err.message)}</span></div>`;
+  }
+}
+
+/* ---------- numbers ---------- */
+const isNum = v => v !== "" && v !== null && v !== undefined && !isNaN(Number(v))
+                   && typeof v !== "boolean";
+function fmt(v, dp){
+  const n = Number(v); if (!isFinite(n)) return String(v);
+  if (dp === undefined){
+    const a = Math.abs(n);
+    dp = Number.isInteger(n) ? 0 : a >= 1000 ? 0 : a >= 100 ? 1 : a >= 1 ? 2 : 4;
+  }
+  return n.toLocaleString(undefined,{minimumFractionDigits:dp,maximumFractionDigits:dp});
+}
+const titleCase = s => String(s).replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase());
+
+/* ---------- reading the table ---------- */
+const TIME_COL = /^(hour(_of_day)?|day(_of_week)?|month|year|date|week|when|period|period_start|timestamp|ts)$/i;
+const ID_COL   = /(building_id|site_id|stream_id|city|country|building_type|cluster|name|label|entity|dataset_id)/i;
+const SKIP_COL = /^(rank|index|n_observations|stream_id|site_id)$/i;
+
+/* The direct answer, stated before any table.
+
+   The payload carries a typed answer -- a number, a yes/no, or the members of a
+   set -- and until now this page ignored it and narrated the supporting table
+   instead. For "what years does this cover" that read "total kwh peaks at
+   2016": true of the table, and not the answer to the question. */
+function leadAnswer(d){
+  const p = d && d.payload; if (!p) return "";
+  const v = p.value;
+  const unit = p.unit ? ` <span class="unit">${esc(p.unit)}</span>` : "";
+  if (p.kind === "scalar" && (typeof v === "number" || typeof v === "string"))
+    return `<b>${esc(typeof v === "number" ? fmt(v) : String(v))}</b>${unit}`;
+  if (p.kind === "boolean" && v && typeof v === "object" && "answer" in v)
+    return `<b>${v.answer ? "Yes" : "No"}</b>`
+         + (v.basis ? ` — ${esc(String(v.basis))}` : "");
+  if (p.kind === "set" && Array.isArray(v) && v.length
+      && v.every(x => x === null || typeof x !== "object")){
+    const shown = v.slice(0, 12).map(x => `<b>${esc(String(x))}</b>`);
+    const rest = v.length - shown.length;
+    return shown.join(", ") + (rest > 0 ? `, and ${fmt(rest,0)} more` : "");
+  }
+  return "";
+}
+
+/* Drill-down navigation: country -> site -> building -> year.
+
+   Reads the catalog through /browse. The snapshot stays partitioned by
+   dataset/site/year, which is what keeps a portfolio scan at 37 files instead
+   of 3,156, so this walks the metadata rather than the layout. Clicking a
+   building at the last level asks a question about it, which is the point of
+   browsing here rather than in a file manager. */
+const BROWSE = {path: [], open: false};
+
+function browseLevels(){
+  const [country, site, building] = BROWSE.path;
+  return {country, site, building};
+}
+
+async function browseLoad(){
+  const {country, site, building} = browseLevels();
+  const q = new URLSearchParams();
+  if (country) q.set("country", country);
+  if (site) q.set("site_id", site);
+  if (building) q.set("building_id", building);
+  const rows = $("#browseRows");
+  rows.innerHTML = `<div class="browse-empty">loading…</div>`;
+  try {
+    const r = await fetch(api("/browse?") + q.toString(), {headers: apiHeaders});
+    const d = await r.json();
+    browseRender(d);
+  } catch (e) {
+    rows.innerHTML = `<div class="browse-empty">could not read the catalog</div>`;
+  }
+}
+
+function browseRender(d){
+  const crumbs = $("#crumbs");
+  const labels = ["All countries", ...BROWSE.path];
+  crumbs.innerHTML = labels.map((label, i) =>
+    i === labels.length - 1
+      ? `<span class="here">${esc(label)}</span>`
+      : `<button data-depth="${i}">${esc(label)}</button>`
+  ).join(`<span class="sep">›</span>`);
+
+  const leaf = d.level === "year";
+  const rows = (d.rows || []).map(r => {
+    const meta =
+      d.level === "country" ? `${fmt(r.buildings,0)} buildings · ${fmt(r.sites,0)} sites`
+    : d.level === "site"    ? `${esc(r.city ?? "")} · ${fmt(r.buildings,0)} buildings`
+    : d.level === "building"? `${esc(r.building_type ?? "—")} · coverage ${r.coverage ?? "—"} · ${esc(r.quality_status ?? "")}`
+    :                         `${fmt(r.readings,0)} readings · ${fmt(r.total_kwh,0)} kWh`;
+    return `<div class="brow${leaf ? " leaf" : ""}" data-name="${esc(String(r.name))}">
+              <span class="nm">${esc(String(r.name))}</span>
+              <span class="meta">${meta}</span></div>`;
+  }).join("");
+  $("#browseRows").innerHTML = rows ||
+    `<div class="browse-empty">nothing at this level</div>`;
+}
+
+document.addEventListener("click", e => {
+  const crumb = e.target.closest("#crumbs button");
+  if (crumb){
+    BROWSE.path = BROWSE.path.slice(0, Number(crumb.dataset.depth));
+    browseLoad(); return;
+  }
+  const row = e.target.closest("#browseRows .brow");
+  if (row && !row.classList.contains("leaf") && BROWSE.path.length < 3){
+    BROWSE.path.push(row.dataset.name);
+    browseLoad();
+  }
+});
+
+function profile(table){
+  if (!table || !table.rows || !table.rows.length) return null;
+  const cols = table.columns && table.columns.length ? table.columns : Object.keys(table.rows[0]);
+  const rows = table.rows;
+  const numeric = c => rows.some(r => isNum(r[c])) &&
+                       rows.every(r => r[c] === null || r[c] === undefined || isNum(r[c]));
+  const measures = cols.filter(c => numeric(c) && !SKIP_COL.test(c));
+  const time  = cols.find(c => TIME_COL.test(c));
+  const label = cols.find(c => ID_COL.test(c) && !numeric(c))
+             || cols.find(c => !numeric(c) && !TIME_COL.test(c));
+  // The metric the question was about is named in the evidence when there is one;
+  // otherwise it is the last numeric column, which is where tools put it.
+  const named = table.evidence && table.evidence.metric;
+  const measure = (named && measures.includes(named)) ? named : measures[measures.length - 1];
+  // Is the table actually ordered by the measure? If not it is a listing, and
+  // calling its first row the leader is simply false -- "Bear_assembly_Beatrice
+  // leads on coverage fraction" was alphabetical order, nothing more.
+  const series = rows.map(r => Number(r[measure])).filter(v => isFinite(v));
+  const ordered = series.length > 2 && (
+    series.every((v, i) => i === 0 || v <= series[i-1] + 1e-9) ||
+    series.every((v, i) => i === 0 || v >= series[i-1] - 1e-9));
+  return {cols, rows, measures, measure, time, label, ordered,
+          unit: (table.evidence || {}).unit || "", tool: table.tool || ""};
+}
+
+/* What a row actually is, so a count never reads as an unexplained "21 rows".
+   Counts are always data rows: column headers are not rows anywhere in this
+   page, in the CSV, or in the API's total_rows. */
+const NOUNS = {
+  building_id:["building","buildings"], site_id:["site","sites"],
+  stream_id:["stream","streams"], dataset_id:["dataset","datasets"],
+  city:["city","cities"], country:["country","countries"],
+  building_type:["building type","building types"], cluster:["cluster","clusters"],
+  hour_of_day:["hour","hours"], day_of_week:["day","days"],
+  date:["day","days"], period_start:["period","periods"], month:["month","months"],
+  year:["year","years"], when:["observation","observations"]
+};
+function noun(p, k){
+  const key = (p.label && NOUNS[p.label]) ? p.label
+            : (p.time && NOUNS[p.time]) ? p.time : null;
+  const pair = key ? NOUNS[key] : ["row","rows"];
+  return `${fmt(k,0)} ${k === 1 ? pair[0] : pair[1]}`;
+}
+
+/* ---------- the written answer ----------
+   Composed from the rows that came back, never from the model: every number
+   below is computed here from the same data the table shows. */
+function narrate(p, table, status){
+  if (!p || !p.measure) return "";
+  const vals = p.rows.map(r => Number(r[p.measure])).filter(v => isFinite(v));
+  if (!vals.length) return "";
+  const shown = p.rows.length;                 // what the extremes are computed from
+  const ev0 = table.evidence || {};
+  const n = ev0.matched_filter || ev0.matched || table.total_rows || shown;
+  const plural = (k, word) => `${fmt(k,0)} ${word}${k === 1 ? "" : "s"}`;
+  const count = k => noun(p, k);
+  const unit = p.unit ? ` <span class="unit">${esc(p.unit)}</span>` : "";
+  const sorted = [...vals].sort((a,b) => a-b);
+  const median = sorted[Math.floor(sorted.length/2)];
+  const total = vals.reduce((a,b)=>a+b,0);
+  const what = titleCase(p.measure).toLowerCase();
+  const S = [];
+
+  if (p.time){                                        // a shape over time
+    let hi = 0, lo = 0;
+    p.rows.forEach((r,i) => {
+      const v = Number(r[p.measure]);
+      if (v > Number(p.rows[hi][p.measure])) hi = i;
+      if (v < Number(p.rows[lo][p.measure])) lo = i;
+    });
+    const at = i => esc(String(p.rows[i][p.time]));
+    S.push(`Across <b>${count(shown)}</b>, `
+      + `${what} peaks at <b>${at(hi)}</b> (<b>${fmt(p.rows[hi][p.measure])}</b>${unit}) `
+      + `and bottoms out at <b>${at(lo)}</b> (<b>${fmt(p.rows[lo][p.measure])}</b>${unit}).`);
+    const ratio = Number(p.rows[lo][p.measure]) > 0
+      ? Number(p.rows[hi][p.measure]) / Number(p.rows[lo][p.measure]) : null;
+    if (ratio && isFinite(ratio) && ratio > 1.15)
+      S.push(`That is a <b>${fmt(ratio,1)}×</b> swing between the quietest and busiest point.`);
+  } else if (p.label && !p.ordered){          // an unordered listing, not a ranking
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    // The count is its own sentence, so anything inserted after it -- the
+    // filter that produced it -- reads second rather than third.
+    S.push(`<b>${count(n)}</b>`
+      + (n > shown ? `, the first <b>${fmt(shown,0)}</b> shown` : "") + `.`);
+    S.push(`${esc(p.measure.replace(/_/g," "))} ranges from <b>${fmt(lo)}</b> to `
+      + `<b>${fmt(hi)}</b>${unit} across those, median <b>${fmt(median)}</b>${unit}.`);
+  } else if (p.label){                                // a comparison across entities
+    const first = p.rows[0], top = String(first[p.label]);
+    S.push(`<b>${esc(top)}</b> leads on ${what} at <b>${fmt(first[p.measure])}</b>${unit}`
+      + (n > shown ? `, of <b>${count(n)}</b> scored` : ` across <b>${count(n)}</b>`)
+      + `.`);
+    if (median > 0 && vals.length > 2){
+      const r = Number(first[p.measure]) / median;
+      if (isFinite(r) && r > 1.2)
+        S.push(`It sits <b>${fmt(r,1)}×</b> above the median of those shown `
+             + `(<b>${fmt(median)}</b>${unit}).`);
+    }
+    if (p.rows.length > 1){
+      const last = p.rows[p.rows.length-1];
+      S.push(`The lowest of the ${count(shown)} shown is `
+           + `<b>${esc(String(last[p.label]))}</b> at <b>${fmt(last[p.measure])}</b>${unit}.`);
+    }
+  } else {
+    S.push(shown === 1
+      ? `${esc(p.measure.replace(/_/g, " "))}: <b>${fmt(vals[0])}</b>${unit}.`
+      : `${esc(p.measure.replace(/_/g, " "))} totals <b>${fmt(total)}</b>${unit} `
+        + `across <b>${count(n)}</b>.`);
+  }
+
+  // The population is the catalog, always. Comparing the match against the
+  // *metered* count read as "1,636 of 1,578 metered buildings match", which
+  // made a plain listing look like it had been filtered to buildings with
+  // electricity. How many are metered is a separate fact, not the
+  // denominator.
+  const ev = table.evidence || {};
+  // What the question asked the cohort to satisfy. This was stated in the text
+  // answer and never reached the page, which renders its own summary -- so a
+  // reader could not tell the weather half of the question had been honoured
+  //.
+  const REQ_WORDS = {
+    consumption_analysis: "electricity data",
+    weather_analysis: "complete weather data",
+    eui_analysis: "floor area for EUI",
+    occupancy_normalisation: "occupancy counts",
+    peer_benchmark: "peer-comparable metadata",
+    forecasting: "enough history to forecast",
+    spatial_analysis: "coordinates"
+  };
+  const reqs = (ev.requires || []).map(r => REQ_WORDS[r] || r.replace(/_/g, " "));
+  // Second sentence, not buried: what the cohort was filtered to is the reader's
+  // first question about a filtered answer.
+  if (reqs.length)
+    S.splice(1, 0,
+      `Filtered to buildings with <b>${reqs.map(esc).join("</b> and <b>")}</b>.`);
+
+  if (ev.matched_filter && ev.buildings_in_catalog){
+    const floor = ev.min_coverage, all = ev.buildings_in_catalog;
+    if (ev.matched_filter >= all)
+      S.push(`That is every building in the catalog — <b>${fmt(all,0)}</b>, `
+           + `no filter applied.`);
+    else
+      S.push(`<b>${fmt(ev.matched_filter,0)}</b> of the catalog's `
+           + `<b>${fmt(all,0)}</b> buildings match`
+           + (floor != null
+              ? ` — a coverage floor of <b>${fmt(floor*100,0)}%</b> excludes the rest.`
+              : `.`));
+    if (ev.buildings_metered && ev.buildings_metered < all)
+      S.push(`<b>${fmt(ev.buildings_metered,0)}</b> of them carry electricity; `
+           + `the remaining <b>${fmt(all - ev.buildings_metered,0)}</b> have `
+           + `metadata but no meter.`);
+    if (ev.truncated_by_limit)
+      S.push(`The first <b>${fmt(ev.limit,0)}</b> are returned.`);
+  }
+
+  // Only a column the answer is about. Reporting that 265 buildings have no
+  // occupants, when the question asked about weather coverage, is noise that
+  // reads like a caveat on the answer.
+  const RELEVANT = new Set([p.measure, p.label].filter(Boolean));
+  const blanks = p.cols.filter(c => RELEVANT.has(c) && !TIME_COL.test(c))
+    .map(c => [c, p.rows.filter(r => r[c] === null || r[c] === undefined || r[c] === "").length])
+    .filter(([, k]) => k > 0 && k < p.rows.length)
+    .sort((a, b) => b[1] - a[1])[0];
+  if (blanks) S.push(`<b>${count(blanks[1])}</b> carry no `
+    + `${esc(blanks[0].replace(/_/g, " "))} — blank in the source, not lost here.`);
+
+  const flagged = p.rows.filter(r => r.questionable_denominator === true
+                                  || String(r.questionable_denominator) === "True").length;
+  if (flagged) S.push(flagged === 1
+    ? `One of these rests on an implausible floor area — treat its normalised `
+      + `value with care.`
+    : `<b>${flagged}</b> of these rest on an implausible floor area — treat those `
+      + `normalised values with care.`);
+  if (n > shown)
+    S.push(`Charted from the first <b>${fmt(shown,0)}</b> of <b>${count(n)}</b>.`);
+  return S.join(" ");
+}
+
+/* ---------- charts ----------
+   One measure, one axis, never two. A bar when the job is comparing magnitude
+   across named things; a line when it is a shape over time; nothing when the
+   data is not either of those, because a chart of two rows is decoration. */
+const tip = $("#tip");
+function showTip(e, html){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.min(e.clientX + pad, innerWidth  - w - 8) + "px";
+  tip.style.top  = Math.max(e.clientY - h - pad, 8) + "px";
+}
+const hideTip = () => { tip.style.opacity = 0; };
+
+function chartFor(p, table){
+  if (!p || !p.measure) return "";
+  const rows = p.rows, m = p.measure;
+  const vals = rows.map(r => Number(r[m]));
+  if (!vals.every(v => isFinite(v))) return "";
+
+  if (p.time && rows.length >= 6)  return lineChart(p);
+  // A bar chart ranks by length. Drawing one over rows that are not ordered by
+  // the measure invites the reader to read a ranking that is not there.
+  if (p.ordered && p.label && rows.length >= 2 && rows.length <= 30)
+    return barChart(p);
+  return "";
+}
+
+function barChart(p){
+  const rows = p.rows.slice(0, 30), m = p.measure;
+  const vals = rows.map(r => Number(r[m]));
+  const max = Math.max(...vals, 0), min = Math.min(...vals, 0);
+  const span = (max - min) || 1;
+  const rowH = 26, padL = 150, padR = 62, padT = 6, padB = 20;
+  const w = 660, h = padT + rows.length * rowH + padB;
+  const x0 = padL, xw = w - padL - padR;
+  const bars = rows.map((r, i) => {
+    const v = Number(r[m]);
+    const y = padT + i * rowH + 4, bh = rowH - 10;
+    const len = Math.max(2, (v - Math.min(0, min)) / span * xw);
+    const label = String(r[p.label] ?? "");
+    const short = label.length > 22 ? label.slice(0, 21) + "…" : label;
+    const flagged = r.questionable_denominator === true
+                 || String(r.questionable_denominator) === "True";
+    return `<text class="lbl" x="${x0 - 9}" y="${y + bh/2 + 4}" text-anchor="end">${esc(short)}`
+         + `<title>${esc(label)}</title></text>`
+         + `<rect class="bar${flagged ? " dim" : ""}" x="${x0}" y="${y}" `
+         + `width="${len.toFixed(1)}" height="${bh}" rx="3"/>`
+         + `<text class="val" x="${x0 + len + 7}" y="${y + bh/2 + 4}">${esc(fmt(v))}</text>`
+         + `<rect class="hit" x="0" y="${padT + i*rowH}" width="${w}" height="${rowH}" `
+         + `data-tip="${esc(label + " — " + fmt(v) + (p.unit ? " " + p.unit : ""))}"/>`;
+  }).join("");
+  return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img"
+    aria-label="${esc(titleCase(p.measure))} by ${esc(titleCase(p.label))}">
+    <line class="grid" x1="${x0}" y1="${padT}" x2="${x0}" y2="${h - padB}"/>
+    ${bars}</svg>`;
+}
+
+function lineChart(p){
+  const rows = p.rows, m = p.measure;
+  const vals = rows.map(r => Number(r[m]));
+  const max = Math.max(...vals), min = Math.min(...vals);
+  const lo = min - (max - min) * .08, hi = max + (max - min) * .08;
+  const span = (hi - lo) || 1;
+  const w = 660, h = 240, padL = 58, padR = 14, padT = 12, padB = 30;
+  const iw = w - padL - padR, ih = h - padT - padB;
+  const X = i => padL + (rows.length === 1 ? iw/2 : i / (rows.length - 1) * iw);
+  const Y = v => padT + ih - (v - lo) / span * ih;
+
+  const pts = rows.map((r,i) => `${X(i).toFixed(1)},${Y(Number(r[m])).toFixed(1)}`);
+  const ticks = [lo, lo + span/2, hi].map(v =>
+    `<line class="grid" x1="${padL}" y1="${Y(v).toFixed(1)}" x2="${w-padR}" y2="${Y(v).toFixed(1)}"/>
+     <text class="axis" x="${padL-8}" y="${(Y(v)+3.5).toFixed(1)}" text-anchor="end">${esc(fmt(v))}</text>`
+  ).join("");
+  const every = Math.max(1, Math.ceil(rows.length / 8));
+  const xlab = rows.map((r,i) => i % every ? "" :
+    `<text class="axis" x="${X(i).toFixed(1)}" y="${h-10}" text-anchor="middle">${esc(String(r[p.time]).slice(0,10))}</text>`
+  ).join("");
+  const dots = rows.length <= 40 ? rows.map((r,i) =>
+    `<circle class="dot" cx="${X(i).toFixed(1)}" cy="${Y(Number(r[m])).toFixed(1)}" r="3.5"/>`
+  ).join("") : "";
+  const hits = rows.map((r,i) =>
+    `<rect class="hit" x="${(X(i) - iw/rows.length/2).toFixed(1)}" y="${padT}"
+      width="${(iw/rows.length).toFixed(1)}" height="${ih}"
+      data-tip="${esc(String(r[p.time]) + " — " + fmt(r[m]) + (p.unit ? " " + p.unit : ""))}"/>`
+  ).join("");
+  return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img"
+    aria-label="${esc(titleCase(p.measure))} over ${esc(titleCase(p.time))}">
+    ${ticks}
+    <polygon class="area" points="${padL},${padT+ih} ${pts.join(" ")} ${w-padR},${padT+ih}"/>
+    <polyline class="line" points="${pts.join(" ")}"/>
+    ${dots}${xlab}${hits}</svg>`;
+}
+
+/* ---------- table ---------- */
+
+/* An overview question is answered by several independent lookups, and the
+   structured `table` field carries only the last one. Render every block the
+   answer text contains, or a three-part answer shows as one. */
+function textBlocks(answer){
+  const out = [];
+  let cur = null;
+  for (const raw of String(answer ?? "").split("\n")){
+    const line = raw.trim();
+    const head = line.match(/^Answer \(([^)]*)\):\s*(.*)$/);
+    if (head){ cur = {title: head[1], count: head[2], rows: [], notes: []};
+               out.push(cur); continue; }
+    if (!cur) continue;
+    if (line.includes("|")) cur.rows.push(line);
+    else if (line) cur.notes.push(line);
+  }
+  return out;
+}
+
+function renderBlock(b){
+  // Lead with what was counted, not with the tool that counted it. "Answer
+  // (search_catalog)" made a reader ask what a catalog was; the catalog is just
+  // this dataset's own site and building tables.
+  let html = `<div class="tbl-head"><span class="tbl-title">`
+           + `${esc(b.count || b.title)}</span>`
+           + `<span class="mono" style="font-size:11px;opacity:.75">`
+           + `${esc(b.title)}</span></div>`;
+  if (b.rows.length >= 2){
+    const cells = b.rows.map(r => r.split("|").map(c => c.trim()));
+    const head = cells[0], body = cells.slice(1);
+    const numeric = head.map((_, i) => body.every(r => !r[i] || isNum(r[i])));
+    html += `<div class="tbl-wrap${body.length <= 10 ? " short" : ""}"><table><thead><tr>`
+      + head.map((h, i) => `<th${numeric[i] ? ' class="num"' : ""}>${esc(titleCase(h))}</th>`).join("")
+      + `</tr></thead><tbody>`
+      + body.map(r => `<tr>` + r.map((c, i) =>
+          `<td${numeric[i] ? ' class="num"' : ""}>${esc(numeric[i] ? fmt(c) : c)}</td>`).join("")
+        + `</tr>`).join("")
+      + `</tbody></table></div>`;
+  }
+  const notes = b.notes.filter(n => !/^\(text view omits/.test(n));
+  if (notes.length) html += `<div class="more">${esc(notes.join(" "))}</div>`;
+  return html;
+}
+
+function tableHTML(p, table){
+  const cols = p.cols.filter(c => !/^stream_id$/i.test(c));
+  const numeric = {};
+  cols.forEach(c => numeric[c] = p.rows.some(r => isNum(r[c]))
+    && p.rows.every(r => r[c] === null || r[c] === undefined || isNum(r[c])));
+  // Every row that came back, in a scroll box with a sticky header -- a table
+  // cut to twelve rows hides the answer as often as it shortens it.
+  const show = p.rows;
+  const base = table.handle && table.run_id
+    ? `/runs/${encodeURIComponent(table.run_id)}/artifacts/${encodeURIComponent(table.handle)}`
+    : "";
+  const dl = base
+    ? `<a class="btn dl" href="${base}.html" target="_blank" rel="noopener"
+         title="every row, sortable, in a new tab"><svg viewBox="0 0 24 24"><path
+         d="M4 4h16v4H4zm0 6h16v2H4zm0 4h16v2H4zm0 4h16v2H4z"/></svg><span>Open full table`
+      + (table.total_rows ? ` · ${esc(noun(p, table.total_rows))}` : "") + `</span></a>`
+      + `<a class="btn dl" style="margin-left:0" href="${base}.csv" download
+         title="download every row as CSV"><svg viewBox="0 0 24 24"><path
+         d="M12 3v10l4-4 1.4 1.4L12 16.8 6.6 10.4 8 9l4 4V3zM5 19h14v2H5z"/></svg>
+         <span>CSV</span></a>`
+    : "";
+  const total = table.total_rows || p.rows.length;
+  return `<div class="tbl-head"><span class="tbl-title" `
+    + `title="data rows only — the column header is not counted">`
+    + `${esc(noun(p, total))} &times; ${p.cols.length} `
+    + `column${p.cols.length === 1 ? "" : "s"}</span>${dl}</div>`
+    + `<div class="tbl-wrap${p.rows.length <= 10 ? " short" : ""}"><table><thead><tr>`
+    + cols.map(c => `<th${numeric[c] ? ' class="num"' : ""}>${esc(titleCase(c))}</th>`).join("")
+    + `</tr></thead><tbody>`
+    + show.map(r => `<tr>` + cols.map(c => {
+        const v = r[c];
+        const flag = v === true || String(v) === "True";
+        const cls = [numeric[c] ? "num" : "", (flag && /questionable|anomal/i.test(c)) ? "flag" : ""]
+                    .filter(Boolean).join(" ");
+        return `<td${cls ? ` class="${cls}"` : ""}>`
+             + esc(numeric[c] ? fmt(v) : (v === null || v === undefined ? "—" : String(v)))
+             + `</td>`;
+      }).join("") + `</tr>`).join("")
+    + `</tbody></table></div>`
+    + (table.total_rows > show.length
+        ? `<div class="more">Carrying ${fmt(show.length,0)} of ${esc(noun(p, table.total_rows))} — `
+          + `open or download the full table for the rest.</div>` : "");
+}
+
+/* Evidence lines the answer text carries as "[key: value]". */
+function evidenceChips(text){
+  const out = [];
+  String(text ?? "").split("\n").forEach(l => {
+    const m = l.trim().match(/^\[([^:\]]+):\s*(.*)\]$/);
+    if (m) out.push(`<span class="fact">${esc(m[1])} <b>${esc(m[2])}</b></span>`);
+  });
+  return out.length ? `<div class="facts-row">${out.join("")}</div>` : "";
+}
+/* Whatever in the answer is neither a table row nor an evidence line. */
+function leftoverProse(text){
+  const keep = String(text ?? "").split("\n").filter(l => {
+    const t = l.trim();
+    return t && !t.includes("|") && !/^\[.*\]$/.test(t) && !/^Answer \(/.test(t)
+        && !/^\.\.\.\s*\d+\s*more rows/.test(t);
+  });
+  return keep.length ? `<div class="prose">${esc(keep.join("\n"))}</div>` : "";
+}
+
+/* ---------- render ---------- */
+function render(card, d){
+  card._d = d;
+  const m = d.metrics || {}, ver = d.verification || {};
+  const cls = d.status === "OK" ? "ok" : d.status === "ERROR" ? "bad" : "warn";
+  const p = profile(d.table);
+  const verFail = (ver.failed || []).length;
+  const tokens = m.tokens ? (m.tokens.prompt||0) + (m.tokens.completion||0) : 0;
+  const engines = Object.entries(m.engine_counts || {}).map(([k,v]) => `${k}×${v}`).join("  ");
+  const tool = d.table && d.table.tool ? d.table.tool
+            : (d.plan||[]).length ? (d.plan[d.plan.length-1].tool || "") : "";
+
+  const lead = leadAnswer(d);
+  const summary = p ? narrate(p, d.table, d.status) : "";
+  const chart = p ? chartFor(p, d.table) : "";
+  const blocks = textBlocks(d.answer);
+  // A chart the question asked for, shown where the answer is read.
+  const fig = d.figure
+    ? `<figure><img src="${esc(API + d.figure)}" alt="chart answering the question"
+         style="width:100%;border:1px solid var(--line);border-radius:11px;
+                background:var(--surface)"></figure>`
+    : "";
+  // A plain-English reading, when the service produced one. Marked as such:
+  // the answer below it is the record.
+  const narration = d.narration
+    ? `<div class="narration"><span>In short</span><p>${esc(d.narration)}</p></div>`
+    : "";
+  const body = blocks.length > 1
+    ? blocks.map(renderBlock).join("")            // several lookups, all shown
+    : p
+    ? (lead ? `<p class="lead-answer">${lead}</p>` : "")
+      + (summary ? `<p class="summary">${summary}</p>` : "")
+      + (chart ? `<figure><figcaption><b>${esc(titleCase(p.measure))}</b>`
+                 + (p.unit ? ` (${esc(p.unit)})` : "")
+                 + (p.time ? ` by ${esc(titleCase(p.time))}` : p.label ? ` by ${esc(titleCase(p.label))}` : "")
+                 + `</figcaption>${chart}</figure>` : "")
+      + tableHTML(p, d.table) + evidenceChips(d.answer)
+    : (lead ? `<p class="lead-answer">${lead}</p>` : "")
+      + `<div class="prose">${esc(d.answer)}</div>` + evidenceChips(d.answer);
+
+  card.innerHTML = `
+    <div class="card-head">
+      <span class="pill ${cls}">${esc(d.status)}</span>
+      ${tool ? `<span class="mono">${esc(tool)}</span>` : ""}
+      <span class="grow"></span>
+      <span class="pill plain">${esc(d.mode)}</span>
+      <span class="pill plain">${d.seconds}s</span>
+    </div>
+    <div class="body">${narration}${fig}${body}${p ? leftoverProse(d.answer) : ""}</div>
+    <div class="meta">
+      <span class="pill plain">${m.steps_executed ?? "?"} steps</span>
+      ${m.planner ? `<span class="pill ${m.planner === "deterministic" ? "warn" : "plain"}"
+        title="the planner that produced the plan that ran">${esc(m.planner)} planner</span>` : ""}
+      ${engines ? `<span class="pill plain">${esc(engines)}</span>` : ""}
+      ${tokens ? `<span class="pill plain">${tokens.toLocaleString()} tokens</span>` : ""}
+      <span class="pill ${verFail ? "bad" : "plain"}">${verFail
+        ? `${verFail} check${verFail>1?"s":""} failed`
+        : `verified · ${(ver.checks||[]).length} checks`}</span>
+      <span class="grow"></span>
+      <a href="/runs/${esc(d.run_id)}/trace" target="_blank" rel="noopener"
+         style="font-size:11.5px">trace</a>
+    </div>
+    ${(d.plan||[]).length ? `<details><summary>Plan · ${d.plan.length} step${d.plan.length>1?"s":""}</summary>
+      <div class="det">${d.plan.map(s => `<div class="step">
+        <span class="step-id">${esc(s.id)}</span><div>
+        <span class="step-tool">${esc(s.tool || (s.agent + " · " + (s.subgoal||"")))}</span>
+        ${s.resolution ? `<span class="pill plain" style="margin-left:6px">${esc(s.resolution)}</span>` : ""}
+        ${s.purpose ? `<div class="step-why">${esc(s.purpose)}</div>` : ""}</div></div>`).join("")}
+      </div></details>` : ""}
+    ${(d.notes||[]).length ? `<details><summary>Planner notes</summary>
+      <div class="det"><pre>${esc(d.notes.join("\n"))}</pre></div></details>` : ""}
+    <details><summary>Evidence</summary><div class="det">
+      <pre>${esc(JSON.stringify(d.evidence, null, 1).slice(0, 6000))}</pre></div></details>`;
+
+  card.querySelectorAll(".hit").forEach(el => {
+    el.addEventListener("mousemove", e => showTip(e, esc(el.dataset.tip)));
+    el.addEventListener("mouseleave", hideTip);
+  });
+}
+
+/* ---------- landing page ---------- */
+function closeLanding(){
+  $("#landing").style.display = "none";
+  ta.focus();
+}
+function openLanding(){ $("#landing").style.display = "block"; }
+// ?start=1 skips straight to the conversation.
+if (new URLSearchParams(location.search).has("start"))
+  $("#landing").style.display = "none";
+$("#startBtn").onclick = closeLanding;
+$("#overview").onclick = openLanding;
+
+/* ---------- the 50 evaluation questions ----------
+   Served from the CSV the grader scores against; status comes from the grader. */
+let QUESTIONS = [];
+const STATUS = {};          // id -> {state, detail}
+
+function markQuestion(id, state, detail){
+  STATUS[id] = {state, detail: detail || ""};
+  renderQuestions();
+}
+
+async function gradeAnswer(id, answer){
+  try {
+    const res = await fetch(api("/eval/grade"), {method:"POST",
+      headers:{"Content-Type":"application/json", ...apiHeaders},
+      body: JSON.stringify({id, answer})});
+    const d = await res.json();
+    markQuestion(id, d.correct === true ? "ok" : d.correct === false ? "bad" : "run",
+                 d.detail || "");
+  } catch (e) { markQuestion(id, "run", "not scored"); }
+}
+
+function filtered(){
+  const cat = $("#fcat").value, lev = $("#flev").value;
+  const term = $("#fq").value.trim().toLowerCase();
+  return QUESTIONS.filter(q =>
+    (!cat || q.category === cat) &&
+    (!lev || q.difficulty === lev) &&
+    (!term || q.question.toLowerCase().includes(term) || q.id.toLowerCase().includes(term)));
+}
+
+function renderQuestions(){
+  const rows = filtered();
+  const list = $("#qlist");
+  list.innerHTML = "";
+  rows.forEach(q => {
+    const s = STATUS[q.id];
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "qitem";
+    b.setAttribute("aria-current", String(CURRENT === q.id));
+    const mark = s
+      ? `<span class="qmark ${s.state}" title="${esc(s.detail)}">${
+           s.state === "ok" ? "✓" : s.state === "bad" ? "✗" : "·"}</span>`
+      : `<span class="qlev">${esc(q.difficulty)}</span>`;
+    b.innerHTML = `<span class="qid">${esc(q.id)}</span>` + mark +
+                  `<span class="qtext">${esc(q.question)}</span>`;
+    b.onclick = () => askQuestion(q);
+    list.appendChild(b);
+  });
+  const done = Object.values(STATUS).filter(s => s.state === "ok" || s.state === "bad").length;
+  const ok = Object.values(STATUS).filter(s => s.state === "ok").length;
+  $("#qcount").textContent = done
+    ? `${rows.length} shown · ${ok}/${done} correct so far`
+    : `${rows.length} of ${QUESTIONS.length} shown`;
+}
+
+let CURRENT = null;
+function askQuestion(q){
+  CURRENT = q.id;
+  closeLanding();
+  if (window.innerWidth <= 1100) $("#rail").dataset.open = "false";
+  ta.value = q.question; grow(); submit(q.id);
+}
+
+/* Sequential: the service answers one question at a time. */
+let RUNNING = false;
+async function runAll(){
+  if (RUNNING) { RUNNING = false; return; }
+  RUNNING = true;
+  const btn = $("#runAll"); btn.textContent = "Stop";
+  const rows = filtered();
+  for (const q of rows) {
+    if (!RUNNING) break;
+    CURRENT = q.id;
+    ta.value = q.question; grow();
+    await submit(q.id);
+    // submit() resolves when the answer is rendered; the grade lands shortly
+    // after and repaints the row on its own.
+  }
+  RUNNING = false; btn.textContent = "Run all";
+}
+
+fetch(api("/eval/questions"), {headers: apiHeaders}).then(r => r.json()).then(d => {
+  QUESTIONS = d.questions || [];
+  const sel = $("#fcat");
+  (d.categories || []).forEach(c => {
+    const o = document.createElement("option"); o.value = c; o.textContent = c;
+    sel.appendChild(o);
+  });
+  renderQuestions();
+}).catch(() => { $("#qcount").textContent = "question set unavailable"; });
+
+["#fcat", "#flev", "#fq"].forEach(s => {
+  $(s).addEventListener("input", renderQuestions);
+});
+$("#runAll").onclick = runAll;
+$("#railToggle").onclick = () => {
+  const r = $("#rail");
+  r.dataset.open = r.dataset.open === "true" ? "false" : "true";
+};
+
+/* ---------- planner model ----------
+   Offered only when the service names more than one. */
+let MODEL = null;
+fetch(api("/models"), {headers: apiHeaders}).then(r => r.json()).then(d => {
+  const models = d.models || [];
+  if (models.length < 2) return;            // nothing to choose between
+  const sel = $("#modelSel");
+  models.forEach(m => {
+    const o = document.createElement("option");
+    o.value = m; o.textContent = m;
+    if (m === d.default) o.selected = true;
+    sel.appendChild(o);
+  });
+  MODEL = sel.value;
+  sel.onchange = () => { MODEL = sel.value; };
+  $("#modelPick").hidden = false;
+}).catch(() => {});
+</script>
+</body>
+</html>

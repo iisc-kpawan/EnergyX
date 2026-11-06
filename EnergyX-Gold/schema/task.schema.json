@@ -1,0 +1,346 @@
+{
+  "$defs": {
+    "AnswerFormat": {
+      "additionalProperties": false,
+      "description": "How an agent must give its answer. `instructions` is shown with the question.",
+      "properties": {
+        "instructions": {
+          "title": "Instructions",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "decimals": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decimals"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "enum": [
+                "any",
+                "ranked"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Order"
+        },
+        "key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Key"
+        }
+      },
+      "required": [
+        "instructions"
+      ],
+      "title": "AnswerFormat",
+      "type": "object"
+    },
+    "Evaluation": {
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "tolerance": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tolerance"
+        }
+      },
+      "required": [
+        "method"
+      ],
+      "title": "Evaluation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "task_id": {
+      "pattern": "^([A-Z]{3}-Q\\d{3}|q\\d{2})$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "serial": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Serial"
+    },
+    "question": {
+      "title": "Question",
+      "type": "string"
+    },
+    "category": {
+      "maximum": 12,
+      "minimum": 1,
+      "title": "Category",
+      "type": "integer"
+    },
+    "category_name": {
+      "title": "Category Name",
+      "type": "string"
+    },
+    "secondary_categories": {
+      "default": [],
+      "items": {
+        "type": "integer"
+      },
+      "title": "Secondary Categories",
+      "type": "array"
+    },
+    "ai_capability": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ai Capability"
+    },
+    "difficulty": {
+      "enum": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5"
+      ],
+      "title": "Difficulty",
+      "type": "string"
+    },
+    "required_data": {
+      "items": {
+        "enum": [
+          "Building Metadata",
+          "Electricity Consumption Data",
+          "Weather Data",
+          "Dataset/Catalog Metadata"
+        ],
+        "type": "string"
+      },
+      "title": "Required Data",
+      "type": "array"
+    },
+    "temporal_scope": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Temporal Scope"
+    },
+    "expected_output_format": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expected Output Format"
+    },
+    "answer_type": {
+      "enum": [
+        "numeric",
+        "set",
+        "scalar_text",
+        "record",
+        "refusal",
+        "method"
+      ],
+      "title": "Answer Type",
+      "type": "string"
+    },
+    "output_type": {
+      "enum": [
+        "scalar",
+        "boolean",
+        "categorical",
+        "list",
+        "ranked_list",
+        "table",
+        "time_series",
+        "forecast",
+        "anomaly_set",
+        "cluster_assignment",
+        "visualization_data",
+        "decision_support",
+        "refusal"
+      ],
+      "title": "Output Type",
+      "type": "string"
+    },
+    "execution_stack": {
+      "default": [],
+      "items": {
+        "enum": [
+          "sql",
+          "pandas",
+          "kg",
+          "sklearn",
+          "sktime",
+          "pytorch",
+          "lightgbm",
+          "statsmodels",
+          "scipy"
+        ],
+        "type": "string"
+      },
+      "title": "Execution Stack",
+      "type": "array"
+    },
+    "answer_format": {
+      "$ref": "#/$defs/AnswerFormat"
+    },
+    "evaluation": {
+      "$ref": "#/$defs/Evaluation"
+    },
+    "definition": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Definition"
+    },
+    "caveats": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Caveats"
+    },
+    "data_version": {
+      "title": "Data Version",
+      "type": "string"
+    },
+    "reference_module": {
+      "title": "Reference Module",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "reviewed",
+        "accepted_seed",
+        "gold_candidate",
+        "gold_verified",
+        "rejected"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "status_note": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Status Note"
+    },
+    "draft": {
+      "additionalProperties": true,
+      "default": {},
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "required": [
+    "task_id",
+    "question",
+    "category",
+    "category_name",
+    "difficulty",
+    "required_data",
+    "answer_type",
+    "output_type",
+    "answer_format",
+    "evaluation",
+    "data_version",
+    "reference_module",
+    "status"
+  ],
+  "title": "Task",
+  "type": "object"
+}

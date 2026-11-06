@@ -1,0 +1,16 @@
+{
+  "structure": {
+    "questions": 6000,
+    "duplicate_ids": [],
+    "duplicate_texts": [],
+    "bad_category": [],
+    "bad_level": [],
+    "missing_program": []
+  },
+  "copies_of_seed_or_gold": [],
+  "reproducibility": {
+    "rerun": 300,
+    "mismatches": []
+  },
+  "ok": true
+}

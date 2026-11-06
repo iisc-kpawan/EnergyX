@@ -1,0 +1,11 @@
+# EnergyX — planner back-ends.
+#
+#     pip install -r requirements/llm.txt
+#
+# A local model through Ollama needs no Python package at all: the service
+# talks to it over HTTP, and `requests` from base.txt is enough. Install this
+# file only to use the Gemini back-end.
+#
+# Ollama itself is a system dependency, not a Python one — see the root README.
+
+google-genai==0.3.0

@@ -1,0 +1,51 @@
+id,difficulty,category,question
+Q01,L1,Data Discovery & Availability,How many buildings are located in London?
+Q02,L2,Data Discovery & Availability,"What building-use categories are represented in the United States, and how many are there?"
+Q03,L3,Data Discovery & Availability,Which buildings have at least 12 consecutive months of hourly electricity data with at least 95% valid readings?
+Q04,L4,Data Discovery & Availability,Which office buildings have valid floor-area data and at least 95% valid hourly electricity and temperature readings during 2016?
+Q05,L5,Data Discovery & Availability,"Which buildings have at least 80% valid hourly electricity data, valid floor-area data, and at least 80% valid overlapping hourly temperature readings for one complete calendar year?"
+Q06,L1,Data Quality & Preprocessing,"Does `Bear_education_Alfredo` have any duplicate timestamps in its hourly electricity data? If yes, how many?"
+Q07,L2,Data Quality & Preprocessing,What percentage of hourly electricity readings are missing for `Peacock_office_Annie` between its first and last recorded timestamps?
+Q08,L3,Data Quality & Preprocessing,Which education buildings have gaps longer than seven consecutive days in their hourly electricity data?
+Q09,L4,Data Quality & Preprocessing,Which buildings have more than 72 consecutive hours of zero electricity consumption?
+Q10,L5,Data Quality & Preprocessing,Impute the missing hourly electricity readings for `Peacock_office_Annie` using linear interpolation for gaps of up to six consecutive hours. How many values were imputed?
+Q11,L1,Consumption & Demand Statistics,What was the total electricity consumption of `Rat_office_Adele` in July 2016?
+Q12,L2,Consumption & Demand Statistics,"On which day did `Fox_office_Alice` have the highest total electricity consumption in 2017, and what was the total on that day?"
+Q13,L3,Consumption & Demand Statistics,Which five office buildings in the United States had the highest peak-to-average hourly electricity-consumption ratio during 2017?
+Q14,L4,Consumption & Demand Statistics,Which building types in London had at least one month in 2017 when average daily electricity consumption was more than 20% above their annual average daily consumption?
+Q15,L5,Consumption & Demand Statistics,"How did the total annual electricity consumption of the largest 10% of buildings by floor area compare with that of the smallest 50% in 2017? Include every building with a recorded floor area and any 2017 readings; apply no minimum-coverage requirement, and take the largest 10% and smallest 50% by rank on floor area."
+Q16,L1,Temporal & Load-Profile Analytics,At what hour of the day did `Cockatoo_office_Alton` have its highest average hourly electricity consumption in 2017?
+Q17,L2,Temporal & Load-Profile Analytics,During which month did `Bear_education_Alfredo` have the highest total electricity consumption in 2017?
+Q18,L3,Temporal & Load-Profile Analytics,How do the weekday and weekend load profiles of `Cockatoo_office_Alton` differ during 2017?
+Q19,L4,Temporal & Load-Profile Analytics,"Which five buildings in Berkeley, CA had the highest average electricity consumption between 2 PM and 6 PM during June–August 2017?"
+Q20,L5,Temporal & Load-Profile Analytics,Which five education buildings in London showed the biggest differences between their weekday and weekend hourly load profiles during 2017?
+Q21,L1,Building Performance & Normalization,What was the annual electricity EUI of `Fox_office_Alice` in 2017?
+Q22,L2,Building Performance & Normalization,Which five office buildings had the highest annual electricity EUI in 2017? Count only buildings with a recorded floor area and at least 90% valid hourly electricity readings in 2017.
+Q23,L3,Building Performance & Normalization,How did the median annual electricity EUI differ between office and education buildings in 2017? Count only buildings with a recorded floor area and at least 90% valid hourly electricity readings in 2017.
+Q24,L4,Building Performance & Normalization,"Which buildings were above the 90th percentile of annual electricity EUI within their own primary-use category in 2017? Count only buildings with a recorded floor area and at least 90% valid hourly electricity readings in 2017. Evaluate every use category against its own 90th percentile, and read “above” as strictly greater than it."
+Q25,L5,Building Performance & Normalization,"How did the median annual electricity EUI of education buildings in the United States that were 10 years old or newer compare with that of older education buildings in 2017? Count only buildings with a recorded floor area, a recorded year built, and at least 90% valid hourly electricity readings in 2017."
+Q26,L1,Weather & Climate Analytics,What was the mean outdoor air temperature in London during July 2017?
+Q27,L2,Weather & Climate Analytics,What was the Pearson correlation between hourly electricity consumption of `Fox_office_Alice` and outdoor air temperature during 2017?
+Q28,L3,Weather & Climate Analytics,Which office buildings had an absolute Pearson correlation above 0.75 between hourly electricity consumption and outdoor air temperature during 2017?
+Q29,L4,Weather & Climate Analytics,What was the Spearman correlation between hourly electricity consumption of `Fox_office_Alice` and dew-point temperature during 2017?
+Q30,L5,Weather & Climate Analytics,Which office buildings had an absolute Spearman correlation above 0.75 between hourly electricity consumption and dew-point temperature during 2017?
+Q31,L1,Spatial & Spatio-Temporal Analytics,How many buildings are available in each country?
+Q32,L2,Spatial & Spatio-Temporal Analytics,Which site has the largest number of education buildings?
+Q33,L3,Spatial & Spatio-Temporal Analytics,Which city had the highest median annual electricity EUI for office buildings in 2017? Count only buildings with a recorded floor area and at least 90% valid hourly electricity readings in 2017.
+Q34,L4,Spatial & Spatio-Temporal Analytics,How did the average weekday load profiles of office buildings vary across countries during 2017?
+Q35,L5,Spatial & Spatio-Temporal Analytics,Which two cities in different countries had the most similar average weekday load profiles for office buildings during 2017?
+Q36,L1,Forecasting & Predictive Analytics,"Forecast the next 12 hours of electricity consumption for `Lamb_education_Norris`, starting at 00:00 on 8 May 2016. Use Seasonal Naïve with the previous 7 days of hourly data, and report the MAE. Use a 24-hour season for Seasonal Naïve."
+Q37,L2,Forecasting & Predictive Analytics,"Compare Seasonal Naïve and AutoARIMA for forecasting the next 24 hours of electricity consumption for `Lamb_education_Norris`, starting at 00:00 on 8 May 2016. Use the previous 7 days of hourly data, and report which method has the lower MAE. Use a 24-hour season for Seasonal Naïve."
+Q38,L3,Forecasting & Predictive Analytics,"Forecast the next 7 days of daily electricity consumption for all education buildings in London, starting on 8 May 2016. Use AutoARIMA with the previous 30 days of daily data, and report the median MAE across the buildings."
+Q39,L4,Forecasting & Predictive Analytics,"Compare AutoARIMA and LightGBM for forecasting the next 24 hours of electricity consumption for `Peacock_office_Major`, starting at 00:00 on 1 March 2016. Use the previous 7 days of hourly data, and report which model has the lower MAE."
+Q40,L5,Forecasting & Predictive Analytics,"Compare Seasonal Naïve and Tiny Time Mixer (TTM) for forecasting the next 24 hours of electricity consumption for all office buildings in Dublin, starting at 00:00 on 8 January 2016. Use the previous 7 days of hourly data, and report which model has the lower median MAE across the buildings. Use a 24-hour season for Seasonal Naïve."
+Q41,L1,Anomaly & Change Detection,How many hourly electricity readings of `Fox_office_Alice` in 2017 were more than 3 standard deviations above its annual mean?
+Q42,L2,Anomaly & Change Detection,How many hourly electricity readings of `Fox_office_Alice` in 2017 were more than 2 standard deviations above its annual mean?
+Q43,L3,Anomaly & Change Detection,"Using the IQR method, how many hourly electricity readings of office buildings in London were identified as outliers during 2017, and on how many days did at least one outlier occur? Compute the fences per building over its own 2017 hourly readings, as Q1 − 1.5×IQR and Q3 + 1.5×IQR."
+Q44,L4,Anomaly & Change Detection,"How many times did the daily electricity consumption of `Cockatoo_office_Alton` increase by more than 20% compared with the previous day during 2016–2017? Compare each day with the immediately preceding calendar day, and count a pair only when both days have all 24 hourly readings."
+Q45,L5,Anomaly & Change Detection,"Using Isolation Forest, which education buildings in Berkeley, CA had the highest number of anomalous hourly electricity readings during May 2016?"
+Q46,L1,Clustering & Similarity Analytics,"Cluster the daily electricity load profiles of `Eagle_office_Lamont` during 2017 using K-Means with k=3. How many days belong to each cluster? Cluster the raw, un-normalised profiles, using only days with all 24 hourly readings."
+Q47,L2,Clustering & Similarity Analytics,Which five office buildings had the most similar average daily electricity load profile to `Eagle_office_Lamont` during 2017?
+Q48,L3,Clustering & Similarity Analytics,Cluster the daily electricity load profiles of office buildings in London using Hierarchical Clustering. Which number of clusters between 2 and 8 gives the highest Silhouette Score?
+Q49,L4,Clustering & Similarity Analytics,Compare K-Means and Hierarchical Clustering for the daily electricity load profiles of office buildings in London. Which method gives the better clustering result?
+Q50,L5,Clustering & Similarity Analytics,"Using TimeSeriesKMeans with DTW distance and k=3, cluster the normalized daily electricity load profiles of education buildings in London. Which buildings belong to each cluster?"

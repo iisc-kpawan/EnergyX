@@ -1,0 +1,811 @@
+{
+  "registry_problems": [],
+  "tasks": [
+    {
+      "task_id": "Q01",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "31df21512243fa2618aabc7ec2c97219e799975231c971b70cda37d7bf27bdbc",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q02",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "669877732d8d2b5c49880c4f9aa658303b77946832447c9d717f2e3b742b78cb",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q03",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "c2bf6253fe4e27c438bcd4e222ba1e597e6d1bc92a3f132225c492201cbfc649",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": [
+          "buildings"
+        ]
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q04",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "b7c62ebff5b6423e8781ec8cb5979917951f5102c4704a67e598b0438bbe9f4c",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q05",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "dd622088dc58feaf43992e3a88a93b4122342bff21a7e36b41b53e1ac510deea",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q06",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "498233768b00af4ebb50d9c976ccc17d2de2bd1a5e0b698f41195d1454ffb0ba",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q07",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "d75ad1a12e88da463633dc6694106de81cc1a1e75a208c2c8cad762ef91e0791",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q08",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "ea35671b70e8205879c7ab5d01ac6246de42dca8ec16fc4ed631eb1cbe445fcc",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q09",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "1396fee206e3dc70b39d5d1acb81ab1546b189e6bf0073d90a3fc28c0e276e40",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q10",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "5a47561ba9c095d5ce038d46ffd24689e2d3af18837d73a2d0d0dbbcd7762000",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": [
+          "buildings"
+        ]
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q11",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "648fed5e9fede5a5ce98057643a34692b023e3877b91de0a16ef729704e34c1c",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q12",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "364eb667edef9fd7f21a1ffa21172ac6e1058c7305e77cd3421450527540fe1a",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q13",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "ced72f6c13a7b4579193f73216475f7ffa412b76bfe32e2befac15fd9a121587",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q14",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "254fc4679147079e05ab07b3b5252a7c90af62c8f820663dc4e60955426b1d79",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q15",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "e8ec80ed20c575270517882bd7adfd189fcc7ec335f1c78637778bcfe6509597",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q16",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "8cb48794c144f6e99e23d692357ab2d2568eb6ac65a2db074fbfc56722ae4f66",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q17",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "fabb2a575cb0df555eef9b7502f2643c9660835259159dcacc507ea734db403c",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q18",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "8a98a0026116b5c37af99181b712e4782399cbfe3012d47f6f47bf2df56fcf9a",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q19",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "0c50935069a6065315bdd8269ce3f11fae542b93507579453a39a27f52daaf19",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q20",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "51f026c03e5b58dc1113a7be1fd125402b66950c70d544926565816a49e8b5d6",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q21",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "5d12d0bdd2f9e3534ac0a21d0051302f341f54f8b37461b3185d623f85a49fc2",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q22",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "988f5476824ee753b2b22945d70131b3f2a7d4685e032ae15280fd85e47d171b",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q23",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "cd774b8541e81929146e269e499c1d7fbfa9752fbf8ca50765ae629ec39c7868",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q24",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "4b6f2481b803d4965580551038b7743f7eafebba79922014a14147a82baf96c2",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q25",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "d489f420e8e766e15807e87c88520cbb65931e12ab7cb9f14e5afe9f23190cd6",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q26",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "122c44d4841fca6d85e720063afecbe69cbf72ada7c09dde4cf1a82296b984cc",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": [
+          "sites"
+        ]
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q27",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "18df83250e5bc5b46be85ed060c5d712e9320ad478dd00a0977595cea006f950",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q28",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "c8e2053759388273d1dab0b2932999cf326deda8e7321589b8734cca7a8899f3",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q29",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "935c25f0ba1c71bde2ff34347bef88460b4c733f467d10b20ce621a0af66ffdd",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q30",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "83ca35e404dcb17f00c64edede6d63856b5a432cbd0ad876176c4013b18aaf6d",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q31",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "ddd9a53c1ea406122b7bac38e8ddc03d29bc77a5576b14f9f049d9f8599a4cef",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q32",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "189e5bfb9fb6d5ab2987e816dd6f4b8450b3842bec3faff08def051208dda36a",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q33",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "124f65e4f459d1cbe4633a8ac903a836e453ad37bd02c6d8d4e470ed31f892f1",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q34",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "dc142cef9e2709cf37790ad5045b74414ce5eb8bc60ace7beb9a3fc7e593deb3",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q35",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "287d339af215edc68fd00986ea344cea7b2a28312fe7af68acb8e5b2514437a0",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q36",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "a4b5d29ffc27504b96fd19421757cd2bf027f087ba24be7ee18df37e6a9109b1",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q37",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "82b9c8ed89a4ee398be325a002cf0aa610fa28beceec89fd48458240f32a7ca0",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q38",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "c0d1e20c2ecedd71fa13d29bf3a2551d1d571a180dbf43a3a70cc8af3997be68",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q39",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "caab12e20160bff8e2244f527df1aa1316e1f35a1dde87ba4c1f6bfdde560b42",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q40",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "e33c7f0a6764c247ca522e08cc306440552532ea2da42466f9dfe24ceabfcc47",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q41",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "ac160017fd17b28cef030671ed72448f8badff9edde9932693f469056b4cc4d5",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q42",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "4fd73babbe89a62d66fe2b8da0bfff0a08dc89f4dc57261b100f701311f61514",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q43",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "db0ab3eaefbf87aad3c9acb1340bf98b357cfd5c506f8469b601978c7ae5f106",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q44",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "de17c798e6cdfc1ff49cca8df7dd0647fc72e33442ba7ad94f9933e9f18477b2",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q45",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "7325e4e9827bd9c1ed25b368a21e3dfc32e55eda345faabac158bc8835ea25dd",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q46",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "3dcde0f7ce232135f2420ae4fab9a1dff385821a106f958434704bdbb9da2fac",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q47",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "3c8aec1fe75aab31e1a28df139bc72413b325cd9f5338bc4f08ba06891889688",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q48",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "9abe8c10a431cd26397fd7e9692c2ce0ff4c16a4a28d2159e79ee42110f5421a",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q49",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "8d006439b6edabaf68d40c9cb43dd10159f98c83004a5804b0b96af2b4cd1a3a",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    },
+    {
+      "task_id": "Q50",
+      "status": "gold_candidate",
+      "runs": true,
+      "well_formed": true,
+      "deterministic": true,
+      "output_sha256": "e1f1e5c6ffe4b12b99176e7a1493a8638ddbe044badb1206d5609c57a91cd749",
+      "data": {
+        "empty_or_missing_views": [],
+        "undeclared_views": []
+      },
+      "draft_comparison": {
+        "matches": null,
+        "note": "no comparable draft answer"
+      }
+    }
+  ]
+}

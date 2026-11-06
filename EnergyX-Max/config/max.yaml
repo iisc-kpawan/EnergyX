@@ -1,0 +1,48 @@
+# Settings for the EnergyX-Max pipeline. Relative paths are relative to the repo root; ~ works.
+# To use other values, copy this file (e.g. to config/max.local.yaml, which git ignores) and point
+# ENERGYX_MAX_CONFIG at it.
+
+data_version: EnergyX-BDG2-v1
+
+paths:
+  # BDG2's electricity_cleaned.csv, weather.csv and the site-annotated BDG2_metadata.csv.
+  bdg2_source_dir: data/bdg2
+  # The EnergyX-Gold questions. No Max question may copy or nearly copy one of them.
+  gold_questions: data/gold/EnergyX-Gold-questions.jsonl
+  seeds:
+    team: data/seeds/team_seed_questions.xlsx
+    advanced: data/seeds/advanced_seed_questions.xlsx
+    design_conversation: data/seeds/design_conversation_seed_questions.csv
+  stages: outputs/stages
+  programs: programs
+  outputs: outputs
+  cache: .cache
+
+# The three agents. Each call is a fresh context on a local Ollama model.
+llm:
+  url: http://localhost:11434/api/chat
+  models:
+    generator: qwen3.5:9b
+    judge: qwen2.5:14b
+    coder: qwen3.5:9b
+  temperature: 0.2
+  seed: 0
+  context_tokens: 8192
+
+pipeline:
+  # Seeds at or above this similarity to an earlier seed are dropped as near-duplicates.
+  seed_duplicate_similarity: 0.92
+  # Slot combinations each new program is tried on before it is kept.
+  program_trials: 3
+  # The Coding stage stops taking templates from a category once this many have working programs.
+  working_templates_per_category: 25
+  # The Coding stage stops after this many attempts in one run (0 means no limit).
+  coding_attempts_per_run: 30
+  # Questions wanted per category and level: 10 x 5 x 120 = 6,000.
+  target_per_cell: 120
+  max_questions_per_template: 100
+  # A question this similar (or more) to a Seed or Gold question is excluded.
+  near_copy_similarity: 0.9
+  program_time_limit_seconds: 60
+  workers: 3
+  random_seed: 2027

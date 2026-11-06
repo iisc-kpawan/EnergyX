@@ -1,0 +1,7 @@
+# Results a reviewer generates by running the evaluation. The committed files
+# in this folder are the reported five-model figures; anything a run writes
+# here is theirs, not ours.
+evaluation_*
+*_per_question.csv
+*_summary.md
+!five_model_summary.md

@@ -1,0 +1,19 @@
+# EnergyX — the heavier forecasting and representation models.
+#
+#     pip install -r requirements/models.txt
+#
+# Needed only by the Advanced AI Analytics tools. The application starts and
+# answers most questions without them; the tools that need one report a
+# dependency error rather than failing silently.
+#
+# torch is large (~2 GB with CUDA wheels). On a machine with no GPU, install
+# the CPU build first:
+#
+#     pip install torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+
+torch==2.14.0
+lightgbm==4.7.0
+sktime==1.1.0
+tslearn==0.9.0
+chronos-forecasting==2.3.0   # pretrained time-series foundation model
+granite-tsfm==0.3.8          # provides tsfm_public

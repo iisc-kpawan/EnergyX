@@ -1,0 +1,21 @@
+# Where the gold modules read their data. Relative paths are relative to the repo root; ~ works too.
+# To use other locations, copy this file (e.g. to config/paths.local.yaml, which git ignores) and
+# point ENERGYX_GOLD_CONFIG at it. See README.md, "Data".
+
+# Must match snapshot_version in the snapshot's MANIFEST.json.
+data_version: EnergyX-BDG2-v1
+
+# The EnergyX snapshot built from BDG2: catalog tables, partitioned electricity and weather
+# readings, aggregates and the knowledge graph.
+snapshot_dir: data/snapshot/EnergyX-BDG2-v1
+
+# The BDG2 files the snapshot was built from. Only the independent checks in tests/ read these.
+bdg2_source_dir: data/bdg2
+
+# The 50 EnergyX-Gold questions, read by scripts/import_gold50.py.
+questions_xlsx: data/questions/EnergyX_Gold_Final_Questions.xlsx
+
+# The snapshot period in site-local standard time. `end` is the last hour, inclusive.
+period:
+  start: "2016-01-01 00:00:00"
+  end: "2017-12-31 23:00:00"

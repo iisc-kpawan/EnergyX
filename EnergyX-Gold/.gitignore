@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+.cache/
+
+# Data lives outside git; see README.md, "Data".
+data/bdg2
+data/snapshot
+
+# Machine-specific configs.
+config/*.local.yaml

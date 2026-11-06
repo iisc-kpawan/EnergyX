@@ -1,0 +1,41 @@
+# Virtual environment
+.venv/
+
+# Source datasets: third-party, large, and obtained separately.
+# See docs/DATA_MODEL.md for provenance and datasets/*/energyx.yaml for manifests.
+BDG2/
+
+# Generated snapshot -- rebuilt from source by scripts/ingest and build_graph.
+data/
+
+# Run artifacts: traces, spilled frames, figures, reports.
+runs/
+
+# Credentials. Plaintext on a shared machine is already the wrong place for
+# these; the one thing that must not also happen is their reaching a commit.
+api_key.txt
+*.key
+
+# Working material that belongs to the private repository, never here.
+# The exporter is the real guard; this is a second line of defence.
+Gold_*
+publish/
+
+# The entries above use a trailing slash, which does not match a symlink of
+# the same name. Pin the paths too, so a link to a snapshot elsewhere on the
+# machine cannot be committed by accident.
+/data
+/BDG2
+/runs
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Editors / OS
+.DS_Store
+*.swp
+

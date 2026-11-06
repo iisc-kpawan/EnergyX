@@ -1,0 +1,120 @@
+# EnergyX dataset manifest -- Building Data Genome Project 2
+#
+# YAML describes *how the dataset is organised*; CSV/Parquet hold the records.
+# This manifest is the schema-registry entry for bdg2: it is what lets the
+# ingestion regenerate the catalog from source without code changes.
+
+dataset:
+  id: bdg2
+  name: Building Data Genome Project 2
+  sector: commercial
+  source_url: https://github.com/buds-lab/building-data-genome-project-2
+  citation: "Miller et al., Scientific Data, 2020"
+  license: See upstream repository
+  description: >
+    Non-residential building meters, 2016-2017, hourly. EnergyX reads the
+    electricity channel only; other meter types are present in the source and
+    deliberately unread. Site weather and building metadata are
+    ingested alongside it as context.
+
+scope:
+  energy_type: electricity
+  excluded_meter_types:
+    [chilledwater, steam, hotwater, gas, water, irrigation, solar]
+
+timestamps:
+  # Naive source timestamps in local standard time, constant offset, no DST.
+  # Established from the data itself -- see .
+  convention: local_standard_time
+  dst_observed: false
+  offset_source: timezone_column      # resolved via the winter-offset rule
+  stored_as: utc
+  partition_year: local
+
+electricity:
+  path: electricity_cleaned.csv
+  layout: wide                        # one column per building, one timestamp column
+  timestamp: timestamp
+  building_id: "<column name>"        # column headers are building ids
+  unit: kWh
+  resolution_minutes: 60
+  stream_level: whole_building
+  # Raw counterpart, read solely to derive quality flags.
+  quality_reference:
+    path: electricity.csv
+    rule: >
+      value present in both -> OK; raw == 0 and cleaned null -> ZERO_MASKED;
+      absent in raw -> row omitted (true gap).
+
+metadata:
+  path: BDG2_metadata.csv
+  building_id: building_id
+  site_id: site_id
+  building_type: primaryspaceusage
+  building_subtype: sub_primaryspaceusage
+  floor_area_m2: sqm
+  year_built: yearbuilt
+  number_of_floors: numberoffloors
+  occupants: occupants
+  heating_type: heatingtype
+  industry: industry
+  subindustry: subindustry
+  latitude: lat
+  longitude: lng
+  timezone: timezone
+  site_name: "Site name"
+  city: City
+  country: Country                    # mixes countries and US states -- see normalise
+  electricity_flag: electricity       # "Yes" marks buildings with an electricity stream
+  extended_attributes:                # carried in building_attributes, not core schema
+    - {column: energystarscore}
+    - {column: eui,         unit: kWh/m2/yr}
+    - {column: site_eui,    unit: kBtu/ft2/yr}
+    - {column: source_eui,  unit: kBtu/ft2/yr}
+    - {column: leed_level}
+    - {column: rating}
+    - {column: date_opened}
+    - {column: sqft,        unit: ft2}
+    - {column: UID}
+
+weather:
+  path: weather.csv
+  timestamp: timestamp
+  site_id: site_id
+  variables:
+    air_temperature: airTemperature
+    dew_temperature: dewTemperature
+    sea_level_pressure: seaLvlPressure
+    wind_direction: windDirection
+    wind_speed: windSpeed
+    cloud_coverage: cloudCoverage
+    precip_depth_1hr: precipDepth1HR
+    precip_depth_6hr: precipDepth6HR
+
+normalise:
+  country:
+    # The source Country column mixes countries with US states.
+    US:          {country: US}
+    UK:          {country: UK}
+    Ireland:     {country: Ireland}
+    Canada:      {country: Canada}
+    Arizona:     {country: US, state_region: Arizona}
+    Florida:     {country: US, state_region: Florida}
+    Texas:       {country: US, state_region: Texas}
+    "New York":  {country: US, state_region: New York}
+    California:  {country: US, state_region: California}
+    "New Jersey": {country: US, state_region: New Jersey}
+    Anonymous:   {country: null}
+  city:
+    strip_region_suffix: true         # "Ottawa, Ontario" -> Ottawa / Ontario
+    null_values: [Anonymous]
+  site_name:
+    null_values: [Anonymous]
+
+partitioning:
+  electricity: [dataset, site_id, year]
+  weather: [dataset, site_id, year]
+  sort_within_file: [building_id, timestamp_utc]
+
+capabilities:
+  min_coverage: 0.90
